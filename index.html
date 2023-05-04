@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Web Serial API Demo</title>
+</head>
+
+<body>
+  <button id="connect-btn">Connect</button>
+  <input type="text" id="input-box">
+  <button id="send-btn">Send</button>
+  <pre id="output"></pre>
+
+  <script>
+    const connectBtn = document.getElementById('connect-btn');
+    const sendBtn = document.getElementById('send-btn');
+    const inputBox = document.getElementById('input-box');
+    const output = document.getElementById('output');
+    let textEncoder;
+    let writableStreamClosed;
+    let writer;
+    let port;
+
+    async function connect() {
+      try {
+        port = await navigator.serial.requestPort();
+        await port.open({ baudRate: 9600 });
+        output.textContent += 'Serial port connected!\n';
+        textEncoder = new TextEncoderStream();
+        writableStreamClosed = textEncoder.readable.pipeTo(port.writable);
+        writer = textEncoder.writable.getWriter();
+        receive();
+      } catch (error) {
+        output.textContent += `Error: ${error}\n`;
+      }
+    }
+
+    async function send() {
+      try {
+        data = inputBox.value;
+        if (port && port.writable) {
+          await writer.write(data);
+          //await port.write(data);
+          output.textContent += `Sent: ${data}\n`;
+        } else {
+          output.textContent += 'Error: Serial port is not open or writable\n';
+        }
+      } catch (error) {
+        output.textContent += `Error: ${error}\n`;
+      }
+    }
+
+    async function receive() {
+      try {
+        alert("text received");
+          const reader = port.readable.getReader();
+          while (true) {
+              const { value, done } = await reader.read();
+              if (done) {
+                  output.textContent += 'Serial port closed\n';
+                  reader.releaseLock();
+                  break;
+              }
+              output.textContent += `Received: ${new TextDecoder().decode(value)}\n`;
+          }
+      } catch (error) {
+          output.textContent += `Error: ${error}\n`;
+      }
+    }
+
+    sendBtn.addEventListener('click', send);
+    connectBtn.addEventListener('click', connect);
+  </script>
+</body>
+
+</html>
+
+
+  
