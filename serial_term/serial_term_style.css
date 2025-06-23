@@ -1,0 +1,142 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f9f9f9;
+  min-height: 100vh;
+  min-width: 100vw;
+  box-sizing: border-box;
+}
+
+button {
+  margin: 5px;
+  padding: 8px 16px;
+  font-size: 16px;
+}
+
+#input-box {
+  padding: 8px;
+  font-size: 16px;
+}
+
+#output {
+  width: 100%;
+  height: 60vh;
+  background: #222;
+  color: #0f0;
+  padding: 16px;
+  border-radius: 8px;
+  margin-top: 20px;
+  box-sizing: border-box;
+  overflow-y: scroll;      /* Always show vertical scrollbar */
+  white-space: pre
+}
+
+.ser_term_container
+{
+}
+
+.output-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+#clear-btn, #autoscroll-btn {
+  position: absolute;
+  top: 20px;
+  z-index: 2;
+  padding: 4px 12px;
+  font-size: 0.9em;
+  background: #0d91dd;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#clear-btn {
+  right: 20px;
+}
+
+#autoscroll-btn {
+  right: 100px;
+}
+
+#clear-btn:hover, #autoscroll-btn:hover {
+  background: #001e54;
+}
+
+.toggle-btn.active {
+  background: #0d91dd;
+}
+.toggle-btn.inactive {
+  background: #888;
+}
+
+.modal {
+  display: none; 
+  position: fixed; 
+  z-index: 10; 
+  left: 0;
+  top: 0;
+  width: 100%; 
+  height: 100%; 
+  overflow: auto; 
+  background-color: rgba(0,0,0,0.4); 
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: 10% auto; 
+  padding: 20px;
+  border: 1px solid #888;
+  width: 320px;
+  border-radius: 10px;
+  position: relative;
+}
+
+.close {
+  color: #aaa;
+  position: absolute;
+  right: 16px;
+  top: 8px;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: #001e54;
+}
+
+.ser_term_header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 18px 32px 10px 32px;
+  background: #fff;                /* White background */
+  color: #001e54;
+  border-radius: 12px 12px 0 0;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.ser_term_logo img {
+  max-height: 60px;                /* Reduced logo size */
+  max-width: 120px;
+  height: auto;
+  width: auto;
+  margin-right: 12px;               /* Space between logo and title */
+}
+
+.ser_term_title {
+  margin: 0;
+  font-size: 1.7em;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.ser_term_container {
+  background: #0d91dd;
+}

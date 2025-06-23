@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Serial Terminal</title>
+  <link rel="stylesheet" href="serial_term_style.css">
+</head>
+
+<body>
+  <header class="ser_term_header">
+    <div class="ser_term_logo">
+      <img src="..\common_artifacts\logo\test_blox_header_logo.png" alt="Test Blox Logo">
+    </div>
+    <h2 class="ser_term_title">Serial Terminal</h2>
+  </header>
+  <div class="ser_term_container">
+    <button id="connect-btn">Connect</button>
+    <button id="configure-btn">Configure</button>
+    <input type="text" id="input-box">
+    <button id="send-btn">Send</button>
+    <div class="output-wrapper">
+      <button id="autoscroll-btn" title="Toggle Auto-Scroll" class="toggle-btn active">Auto-Scroll</button>
+      <button id="clear-btn" title="Clear Output">Clear</button>
+      <pre id="output"></pre>
+    </div>
+
+    <!-- Configuration Popup -->
+    <div id="config-modal" class="modal">
+      <div class="modal-content">
+        <span class="close" id="close-config">&times;</span>
+        <h3>Serial Port Configuration</h3>
+        <form id="config-form">
+          <label for="port-number">Port Number:</label>
+          <select id="port-number" name="port-number"></select>
+          <button type="button" id="port-select-btn">Select</button>
+          <span id="selected-port-info" style="margin-left:10px;color:#001e54;"></span>
+          <br><br>
+          <label for="baudrate">Baud Rate:</label>
+          <select id="baudrate" name="baudrate">
+            <option value="9600">9600</option>
+            <option value="19200">19200</option>
+            <option value="38400">38400</option>
+            <option value="57600">57600</option>
+            <option value="115200">115200</option>
+          </select>
+          <br><br>
+          <label for="parity">Parity:</label>
+          <select id="parity" name="parity">
+            <option value="none">None</option>
+            <option value="even">Even</option>
+            <option value="odd">Odd</option>
+          </select>
+          <br><br>
+          <button type="submit">Save</button>
+        </form>
+      </div>
+    </div>
+
+    <script src="serial_term_script.js"></script>
+  </div>
+
+</body>
+
+</html>

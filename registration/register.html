@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Registration Page</title>
+  <link rel="stylesheet" type="text/css" href="..\common_css\style.css">
+  <link rel="stylesheet" type="text/css" href="..\common_css\header_footer.css">
+</head>
+
+<body>
+  <div class="container">
+    <div class="logo">
+      <img src="..\common_artifacts\logo\test_blox_header_logo.png" alt="Test Blox Logo">
+    </div>
+    <h2>Create an Account</h2>
+    <form id="registerForm" method="post" action="register.php">
+      <div class="form-row">
+        <div class="form-group">
+          <input type="text" name="firstName" placeholder="First Name" required>
+        </div>
+        <div class="form-group">
+          <input type="text" name="lastName" placeholder="Last Name" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <input type="text" name="mobileNumber" placeholder="Mobile Number" required>
+      </div>
+      <div class="form-group">
+        <input id="dob" type="date" name="dateOfBirth" required>
+      </div>
+      <div class="form-group">
+        <input type="text" name="username" placeholder="Username" required>
+      </div>
+      <div class="form-group">
+        <input type="password" name="password" placeholder="Password" required>
+      </div>
+      <div class="form-group">
+        <input type="submit" value="Register">
+      </div>
+    </form>
+    <p>Already have an account? <a href="..\login\index.html">Login</a></p>
+
+  </div>
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <!-- Add your footer content here -->
+      <p>&copy; 2025 My Web Page. All rights reserved.</p>
+    </div>
+  </footer>
+  <script src="..\common_js\script.js"></script>
+</body>
+
+</html>
