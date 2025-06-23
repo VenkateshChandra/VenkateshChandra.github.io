@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Header with Tabs and Dropdowns</title>
+  <link rel="stylesheet" type="text/css" href="..\common_css\style.css">
+  <link rel="stylesheet" type="text/css" href="..\common_css\header_footer.css">
+  <link rel="stylesheet" type="text/css" href="..\common_css\location_selector.css">
+</head>
+
+<body>
+  <div class="container">
+    <div class="logo">
+      <img src="..\common_artifacts\logo\test_blox_header_logo.png" alt="Test Blox Logo">
+    </div>
+    <h2>Welcome back </h2><br>
+    <div class="login-box">
+      <h2>Please Choose the Location and Floor Details:</h2>
+      <form>
+        <div class="header">
+          <div class="tab" id="location"><span id="selected-location">Location</span>            
+            <div class="dropdown">
+              <div class="dropdown-item">Chennai</div>
+              <div class="dropdown-item">Pune</div>
+              <div class="dropdown-item">Goa</div>
+            </div>
+          </div>
+          <div class="tab" id="floor-number">
+            Floor
+            <div class="dropdown">
+              <div class="dropdown-item1">To be Updated</div>
+              <div class="dropdown-item1">To be Updated</div>
+              <div class="dropdown-item1">To be Updated</div>
+            </div>
+          </div>
+        </div>
+        <br><h3>Select a date:</h3>
+        <div class="form-group">
+          <input id="curr-date" type="date" name="selected-data" required>
+        </div>
+        <div class="form-group">
+          <input type="submit" id="search-btn" value="Search">
+        </div>
+    </div>
+    </form>
+    <div class="content">
+      <!-- Your page content goes here -->
+    </div>
+  </div>
+  <script src="..\common_js\script.js"></script>
+  <script src="..\common_js\location_selector.js"></script>
+</body>
+
+</html>
