@@ -250,3 +250,88 @@ async function receive() {
 document.getElementById('clear-btn').addEventListener('click', function () {
   document.getElementById('output').textContent = '';
 });
+
+// Hamburger and side nav logic
+const hamburgerMenu = document.getElementById('hamburger-menu');
+const sideNav = document.getElementById('side-nav');
+const closeSideNav = document.getElementById('close-side-nav');
+
+hamburgerMenu.addEventListener('click', function () {
+  hamburgerMenu.classList.toggle('active');
+  if (sideNav.style.width === '260px') {
+    sideNav.style.width = '0';
+  } else {
+    sideNav.style.width = '260px';
+  }
+});
+closeSideNav.addEventListener('click', function () {
+  sideNav.style.width = '0';
+  hamburgerMenu.classList.remove('active');
+});
+// Optional: close side nav when clicking outside
+window.addEventListener('click', function (e) {
+  if (
+    sideNav.style.width === '260px' &&
+    !sideNav.contains(e.target) &&
+    e.target !== hamburgerMenu &&
+    !hamburgerMenu.contains(e.target)
+  ) {
+    sideNav.style.width = '0';
+    hamburgerMenu.classList.remove('active');
+  }
+});
+
+// User profile slider logic
+document.getElementById('user-profile-icon').addEventListener('click', function () {
+  document.getElementById('profile-nav').style.width = '240px';
+});
+document.getElementById('close-profile-nav').addEventListener('click', function () {
+  document.getElementById('profile-nav').style.width = '0';
+});
+window.addEventListener('click', function (e) {
+  const nav = document.getElementById('profile-nav');
+  if (nav.style.width === '240px' && !nav.contains(e.target) && e.target.id !== 'user-profile-icon') {
+    nav.style.width = '0';
+  }
+});
+
+window.addEventListener('DOMContentLoaded', function () {
+  const header = document.querySelector('.ser_term_header');
+  if (header) {
+    const headerHeight = header.offsetHeight + 'px';
+    document.documentElement.style.setProperty('--header-height', headerHeight);
+  }
+});
+
+const themeToggle = document.getElementById('theme-toggle');
+const themeToggleIcon = document.getElementById('theme-toggle-icon');
+
+function setTheme(mode) {
+  if (mode === 'dark') {
+    document.body.classList.add('dark-mode');
+    themeToggleIcon.src = '../common_artifacts/logo/sun_icon.png'; // Sun icon for dark mode
+    themeToggleIcon.alt = 'Switch to Light Mode';
+    localStorage.setItem('theme', 'dark');
+  } else {
+    document.body.classList.remove('dark-mode');
+    themeToggleIcon.src = '../common_artifacts/logo/moon_icon.png'; // Moon icon for light mode
+    themeToggleIcon.alt = 'Switch to Dark Mode';
+    localStorage.setItem('theme', 'light');
+  }
+}
+
+themeToggle.addEventListener('click', () => {
+  const isDark = document.body.classList.toggle('dark-mode');
+  setTheme(isDark ? 'dark' : 'light');
+});
+
+themeToggle.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    themeToggle.click();
+  }
+});
+
+window.addEventListener('DOMContentLoaded', () => {
+  const savedTheme = localStorage.getItem('theme');
+  setTheme(savedTheme === 'dark' ? 'dark' : 'light');
+});

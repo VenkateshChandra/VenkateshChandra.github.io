@@ -9,11 +9,47 @@
 
 <body>
   <header class="ser_term_header">
+    <div class="hamburger" id="hamburger-menu" tabindex="0" aria-label="Open navigation menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
     <div class="ser_term_logo">
       <img src="..\common_artifacts\logo\test_blox_header_logo.png" alt="Test Blox Logo">
     </div>
-    <h2 class="ser_term_title">Serial Terminal</h2>
+    <div class="theme-toggle" id="theme-toggle" title="Toggle dark/light mode" tabindex="0">
+      <img id="theme-toggle-icon" src="../common_artifacts/logo/moon_icon.png" alt="Toggle Theme" />
+    </div>
+        <h2 class="ser_term_title">Serial Terminal</h2>
+    <div class="user-profile" id="user-profile">
+      <img src="../common_artifacts/logo/user_icon.png" alt="User" id="user-profile-icon" tabindex="0" />
+    </div>
   </header>
+
+  <!-- Side Navigation Slider -->
+  <nav id="side-nav" class="side-nav">
+    <div class="side-nav-content">
+      <button class="close-side-nav" id="close-side-nav" aria-label="Close navigation">&times;</button>
+      <ul>
+        <li><a href="#">Option_1</a></li>
+        <li><a href="#">Option_2</a></li>
+        <li><a href="#">Option_3</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Profile Navigation -->
+  <nav id="profile-nav" class="profile-nav">
+    <div class="profile-nav-content">
+      <button class="close-profile-nav" id="close-profile-nav" aria-label="Close profile">&times;</button>
+      <ul>
+        <li><a href="#">Profile</a></li>
+        <li><a href="#">Settings</a></li>
+        <li><a href="#">Logout</a></li>
+      </ul>
+    </div>
+  </nav>
+
   <div class="ser_term_container">
     <button id="connect-btn">Connect</button>
     <button id="configure-btn">Configure</button>
