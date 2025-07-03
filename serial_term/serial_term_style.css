@@ -1,5 +1,8 @@
 :root {
   --header-height: 78px;
+  --footer-height: 56px;
+  --output-height: calc(100vh - var(--header-height) - var(--footer-height));
+  --message-blox-height: var(--output-height);
 }
 
 body {
@@ -23,47 +26,36 @@ button {
   font-size: 16px;
 }
 
-#output {
-  width: 100%;
-  height: 60vh;
-  background: #222;
-  color
-  padding: 16px;
-  border-radius: 8px;
-  margin-top: 20px;
-  box-sizing: border-box;
-  overflow-y: scroll;      /* Always show vertical scrollbar */
-  white-space: pre
-}
-
-.output-wrapper {
-  position: relative;
-  width: 100%;
-}
-
-#clear-btn, #autoscroll-btn {
+#clear-btn, #savelog-btn ,#autoscroll-btn {
   position: absolute;
-  top: 20px;
+  top: 10px;
   z-index: 2;
   padding: 4px 12px;
   font-size: 0.9em;
-  background: #0d91dd;
+  background: #001e54;
   color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
 }
 
+
 #clear-btn {
   right: 20px;
 }
 
-#autoscroll-btn {
+#savelog-btn {
   right: 100px;
 }
 
-#clear-btn:hover, #autoscroll-btn:hover {
-  background: #001e54;
+#autoscroll-btn {
+  right: 210px;
+}
+
+
+
+#clear-btn:hover, #autoscroll-btn:hover,#savelog-btn:hover  {
+  background: #0d91dd;
 }
 
 .toggle-btn.active {
@@ -130,6 +122,11 @@ button {
 
 .ser_term_container {
   background: #ffffff;
+}
+
+/* Dark mode background for ser_term_container */
+body.dark-mode .ser_term_container {
+  background: #181c24;
 }
 
 /* Hamburger menu styles */
@@ -220,11 +217,12 @@ button {
   padding: 10px 32px 10px 32px;
   background: #fff;
   color: #001e54;
-  border-radius: 18px 18px 18px 18px;
+  border-radius: 0px 0px 18px 18px;
   margin-bottom: 0;
   border: none; /* Remove all borders */
   border-bottom: 6px solid #001e54; /* Add thick underline */
   box-sizing: border-box;
+  margin-bottom: 36px;
 }
 
 /* User profile icon styles */
@@ -307,13 +305,33 @@ button {
   transition: background 0.2s;
 }
 
-/* Add to your serial_term_style.css for dark mode support */
+footer {
+  background-color: rgb(255, 255, 255);
+  height: var(--footer-height, 56px)
+  color: #001e54;
+  font-family: palatino linotype;
+  font-weight: bold;
+  padding: 10px;
+  text-align: center;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  box-sizing: border-box;
+  border-top-style: solid;
+  border-top-width: 6px;
+  border-radius: 18px 18px 0px 0px;
+  border-color: #001e54;
+}
+
+
+/* dark mode support */
 body.dark-mode {
   background: #181c24;
   color: #e0e6ef;
 }
 
-body.dark-mode .ser_term_header {
+body.dark-mode .ser_term_header ,
+body.dark-mode .ser_term_footer{
   background: #222b3a;
   color: #e0e6ef;
   border-color: #0d91dd;
@@ -348,9 +366,9 @@ body.dark-mode .modal-content {
   color: #e0e6ef;
 }
 
-body.dark-mode #output {
-  background: #181c24;
-  color: #b7ffb7;
+body.dark-mode .output-wrapper {
+  background: #232b3a;
+  color: #e0e6ef;
 }
 
 body.dark-mode .theme-toggle img {
@@ -369,6 +387,95 @@ body.dark-mode .close-profile-nav {
 }
 
 body.dark-mode .hamburger {
-  /* Optional: add a subtle background for better visibility */
   background: transparent;
+}
+
+.main-content {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
+  height: 100%;
+  gap: 16px;
+}
+
+.output-wrapper {
+  flex: 1 1 60%;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  position: relative;
+  width: 100%;
+  height:75vh;
+  background: #d0e0f0;
+  color: #001e54;
+  border-radius: 10px;
+  box-sizing: border-box;
+  white-space: pre;
+  margin-left: 10px;
+}
+
+.message-blox {
+  margin-right: 10px;
+  flex: 1 1 40%;
+  background: #d0e0f0;
+  color: #001e54;
+  border-radius: 10px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  min-width: 220px;
+  max-width: 40vw;
+  font-family: 'palatino linotype', Arial, sans-serif;
+  max-height: calc(100vh - var(--header-height, 78px) - var(--footer-height, 56px) - 40px); /* Ensures it fits and scrolls */
+}
+
+body.dark-mode .message-blox {
+  background: #232b3a;
+  color: #e0e6ef;
+}
+
+.output-console-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;   /* Center all content horizontally */
+  position: relative;
+  min-height: unset;
+  height: auto;
+  margin-bottom: 0;
+  padding: 0;
+  gap: 12px; /* Optional: space between title and buttons */
+}
+
+.output-console-content {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  height: 100%;
+}
+
+#output {
+  margin: 0;
+  padding: 0 8px;
+  min-height: 0;
+  background: transparent;
+}
+
+.output-line {
+  user-select: all;
+  cursor: pointer;
+  white-space: pre;
+  padding: 0 2px;
+}
+
+.output-title{
+  font-family: 'palatino linotype', Arial, sans-serif;
+  font-weight: bold;
+  font-size: 1.2em;
+  color: #001e54;
+  margin-top: 5px;
+  padding: 8px;
+  align-content: center;
+  flex: 0 1 auto;
+  text-align: center;
+  text-decoration: underline; /* Add underline */
 }
