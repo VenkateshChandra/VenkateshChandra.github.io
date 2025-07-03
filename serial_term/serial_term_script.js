@@ -7,7 +7,8 @@ const configureBtn = document.getElementById('configure-btn');
 const configModal = document.getElementById('config-modal');
 const closeConfig = document.getElementById('close-config');
 const configForm = document.getElementById('config-form');
-const outputElem = output;
+const outputElem = document.getElementById('output');
+const outputScrollContainer = document.querySelector('.output-console-content'); // Add this
 
 let textEncoder;
 let writableStreamClosed;
@@ -41,15 +42,16 @@ async function closePortIfOpen() {
         try {
           await reader.cancel(); // Cancel any pending read
         } catch (e) {}
-        if (reader) { // Only release if not already released
+        if (reader) {
           reader.releaseLock();
           reader = null;
         }
       }
+      // Only now close the port
       await port.close();
-      output.textContent += `[${getTimestamp()}] Serial port closed\n`;
+      appendOutputLine(`[${getTimestamp()}] Serial port closed`);
     } catch (e) {
-      output.textContent += `[${getTimestamp()}] Error closing port: ${e}\n`;
+      console.log(`[${getTimestamp()}] Error closing port: ${e}`);
     }
   }
 }
@@ -163,14 +165,14 @@ connectBtn.addEventListener('click', async function () {
           flowControl: 'none'
         });
       }
-      output.textContent += `[${getTimestamp()}] Serial port connected!\n`;
+      appendOutputLine(`[${getTimestamp()}] [Info]: Serial port connected!`);
       textEncoder = new TextEncoderStream();
       writableStreamClosed = textEncoder.readable.pipeTo(port.writable);
       writer = textEncoder.writable.getWriter();
       receive();
       connectBtn.textContent = 'Disconnect';
     } catch (error) {
-      output.textContent += `[${getTimestamp()}] Error: ${error}\n`;
+      appendOutputLine(`[${getTimestamp()}] Error: ${error}`);
     }
   } else {
     await closePortIfOpen();
@@ -186,9 +188,9 @@ async function send() {
     const data = inputBox.value;
     if (port && port.writable) {
       await writer.write(data);
-      output.textContent += `[${getTimestamp()}] [TX]: ${data}\n`;
+      appendOutputLine(`[${getTimestamp()}] [TX]: ${data}`);
     } else {
-      output.textContent += `[${getTimestamp()}] Error: Serial port is not open or writable\n`;
+      appendOutputLine(`[${getTimestamp()}] Error: Serial port is not open or writable`);
     }
   } catch (error) {
     output.textContent += `[${getTimestamp()}] Error: ${error}\n`;
@@ -199,9 +201,9 @@ autoscrollBtn.addEventListener('click', function () {
   autoScroll = !autoScroll;
   autoscrollBtn.classList.toggle('active', autoScroll);
   autoscrollBtn.classList.toggle('inactive', !autoScroll);
-  autoscrollBtn.textContent = autoScroll ? 'Auto-Scroll' : 'Manual Scroll';
+  autoscrollBtn.textContent = autoScroll ? 'Manual Scroll' : 'Auto Scroll';
   if (autoScroll) {
-    outputElem.scrollTop = outputElem.scrollHeight;
+    scrollOutputToBottom();
   }
 });
 
@@ -210,9 +212,29 @@ outputElem.addEventListener('scroll', function () {
     autoScroll = false;
     autoscrollBtn.classList.remove('active');
     autoscrollBtn.classList.add('inactive');
-    autoscrollBtn.textContent = 'Manual Scroll';
+    autoscrollBtn.textContent = 'Auto Scroll';
   }
 });
+
+outputScrollContainer.addEventListener('scroll', function () {
+  if (
+    autoScroll &&
+    (outputScrollContainer.scrollTop + outputScrollContainer.clientHeight < outputScrollContainer.scrollHeight - 5)
+  ) {
+    autoScroll = false;
+    autoscrollBtn.classList.remove('active');
+    autoscrollBtn.classList.add('inactive');
+    autoscrollBtn.textContent = 'Auto Scroll';
+  }
+});
+
+function scrollOutputToBottom() {
+  if (outputScrollContainer) {
+    outputScrollContainer.scrollTop = outputScrollContainer.scrollHeight;
+  } else {
+    outputElem.scrollTop = outputElem.scrollHeight;
+  }
+}
 
 async function receive() {
   try {
@@ -222,8 +244,7 @@ async function receive() {
     while (true) {
       const { value, done } = await reader.read();
       if (done) {
-        output.textContent += `[${getTimestamp()}] Serial port closed\n`;
-        reader.releaseLock();
+        closePortIfOpen(); 
         reader = null;
         break;
       }
@@ -232,23 +253,23 @@ async function receive() {
         let lines = buffer.split('\n');
         buffer = lines.pop();
         for (const line of lines) {
-          output.textContent += `[${getTimestamp()}] [RX]: ${line}\n`;
+          appendOutputLine(`[${getTimestamp()}] [RX]: ${line}`);
         }
         if (autoScroll) {
-          output.scrollTop = output.scrollHeight;
+          scrollOutputToBottom();
         }
       }
     }
   } catch (error) {
     output.textContent += `[${getTimestamp()}] Error: ${error}\n`;
     if (autoScroll) {
-      output.scrollTop = output.scrollHeight;
+      scrollOutputToBottom();
     }
   }
 }
 
 document.getElementById('clear-btn').addEventListener('click', function () {
-  document.getElementById('output').textContent = '';
+  document.getElementById('output').innerHTML = '';
 });
 
 // Hamburger and side nav logic
@@ -335,3 +356,25 @@ window.addEventListener('DOMContentLoaded', () => {
   const savedTheme = localStorage.getItem('theme');
   setTheme(savedTheme === 'dark' ? 'dark' : 'light');
 });
+
+document.getElementById('savelog-btn').addEventListener('click', function () {
+  const text = document.getElementById('output').textContent;
+  const blob = new Blob([text], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'serial_output_log.txt';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+});
+
+// Instead of output.textContent += line + '\n';
+function appendOutputLine(line) {
+  const lineDiv = document.createElement('div');
+  lineDiv.className = 'output-line';
+  lineDiv.textContent = line;
+  document.getElementById('output').appendChild(lineDiv);
+}
