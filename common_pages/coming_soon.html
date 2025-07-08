@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Coming Soon - TFS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --header-bg: #f7fafd;
+      --header-color: #001e54;
+      --main-bg: #f2f4f8;
+      --main-color: #001e54;
+      --card-bg: #ffffff;
+      --accent: #0d91dd;
+      --card-radius: 16px;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Palatino Linotype', Arial, sans-serif;
+      background: var(--main-bg);
+      color: var(--main-color);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .coming-soon-container {
+      background: var(--card-bg);
+      border-radius: var(--card-radius);
+      box-shadow: 0 4px 24px rgba(0,30,84,0.07);
+      padding: 40px 32px 32px 32px;
+      max-width: 400px;
+      text-align: center;
+      margin: 32px;
+    }
+    .coming-title {
+      font-size: 2em;
+      color: var(--header-color);
+      margin-bottom: 10px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+    .coming-desc {
+      font-size: 1.1em;
+      margin-bottom: 28px;
+      color: #333;
+    }
+    .quick-links {
+      margin-top: 24px;
+      text-align: left;
+    }
+    .quick-links-title {
+      font-size: 1.1em;
+      color: var(--header-color);
+      font-weight: bold;
+      margin-bottom: 8px;
+      text-decoration: underline;
+    }
+    .quick-links ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .quick-links ul li {
+      margin-bottom: 10px;
+    }
+    .quick-links ul li a {
+      color: var(--header-color);
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.2s;
+    }
+    .quick-links ul li a:hover {
+      color: var(--accent);
+      text-decoration: underline;
+    }
+    .countdown {
+      font-size: 1.3em;
+      color: var(--accent);
+      margin-bottom: 18px;
+      font-family: monospace;
+      letter-spacing: 2px;
+    }
+    @media (max-width: 500px) {
+      .coming-soon-container {
+        padding: 24px 8px;
+        max-width: 98vw;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="coming-soon-container">
+    <div class="coming-title">🚧 Coming Soon 🚧</div>
+    <div class="coming-desc">
+      We're working hard to bring you new features and tools.<br>
+      Stay tuned for exciting updates!
+    </div>
+    <div class="countdown" id="countdown"></div>
+    <div class="quick-links">
+      <div class="quick-links-title">Quick Links</div>
+      <ul>
+        <li><a href="../serial_term/serial_term.html">Serial Terminal</a></li>
+        <li><a href="#">CAN Analysis Tool</a></li>
+        <li><a href="../home/home_page.html">Home</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <script>
+    // Simple countdown to a launch date (e.g., August 1, 2025)
+    const launchDate = new Date("2025-08-01T00:00:00");
+    const countdownEl = document.getElementById('countdown');
+    function updateCountdown() {
+      const now = new Date();
+      const diff = launchDate - now;
+      if (diff <= 0) {
+        countdownEl.textContent = "Launching soon!";
+        return;
+      }
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const mins = Math.floor((diff / (1000 * 60)) % 60);
+      const secs = Math.floor((diff / 1000) % 60);
+      countdownEl.textContent = 
+        `${days}d ${hours}h ${mins}m ${secs}s until launch`;
+    }
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  </script>
+</body>
