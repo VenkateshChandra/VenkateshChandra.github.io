@@ -31,23 +31,3 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 });
-
-document.addEventListener('DOMContentLoaded', function () {
-  const slides = document.querySelector('.image-slider .slides');
-  const images = slides.querySelectorAll('img');
-  const prevBtn = document.querySelector('.image-slider .prev');
-  const nextBtn = document.querySelector('.image-slider .next');
-  let currentIndex = 0;
-
-  function showSlide(index) {
-    if (index < 0) index = images.length - 1;
-    if (index >= images.length) index = 0;
-    slides.style.transform = `translateX(-${index * 100}%)`;
-    currentIndex = index;
-  }
-
-  prevBtn.addEventListener('click', () => showSlide(currentIndex - 1));
-  nextBtn.addEventListener('click', () => showSlide(currentIndex + 1));
-
-  showSlide(0);
-});
