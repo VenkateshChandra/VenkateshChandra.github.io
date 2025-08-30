@@ -23,13 +23,13 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  /* Add max-width and auto margin for center alignment */
   max-width: 1200px;
   margin: 0 auto;
+  /* Add space for ads on left and right */
   box-sizing: border-box;
   padding-left: 100px;
   padding-right: 100px;
-  /* Ensure footer stays at bottom */
-  height: 100vh;
 }
 
 .site-header {
@@ -61,6 +61,16 @@ body {
   font-weight: normal;
 }
 
+.main-navigation {
+  display: flex;
+  align-items: center;
+  background: var(--main-color);
+  padding: 15px 0;
+  border-radius: 0px 0px 18px 18px;
+  margin-top: 10px;
+  position: relative;
+}
+
 .nav-menu {
   list-style: none;
   padding: 0;
@@ -89,45 +99,6 @@ body {
 .nav-menu a:hover {
   background: #fff;
   color: var(--accent);
-}
-
-.nav-menu .dropdown-content {
-  position: absolute;
-  left: 0;
-  top: 100%;
-  display: none;
-  background: #fff;
-  min-width: 180px;
-  z-index: 100;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
-.nav-menu .dropdown:hover .dropdown-content {
-  display: block;
-}
-
-.nav-menu .has-submenu {
-  position: relative;
-}
-
-.nav-menu .submenu {
-  display: none;
-  padding: 0;
-  position: absolute;
-  left: 100%;
-  top: 0;
-  min-width: 180px;
-  background: #fff;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  z-index: 101;
-}
-
-.nav-menu .has-submenu:hover > .submenu {
-  display: block;
-}
-
-.nav-menu a:hover {
-  background: #f0f0f0;
 }
 
 .dropdown-content {
@@ -174,24 +145,15 @@ body {
   font-size: 0.8em;
 }
 
-.main-body {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  margin: 20px auto 20px auto;
-}
-
 .site-content {
-  flex: 1;
   display: flex;
   flex-direction: row;
   max-width: 1100px;
-  margin: 20px auto 0 auto;
+  margin: 40px auto 0 auto;
   padding: 0 24px;
+  flex: 1;
   gap: 32px;
   border-top: none;
-  /* Make content scrollable if needed */
-  overflow-y: auto;
 }
 
 .featured-post {
@@ -271,7 +233,6 @@ body {
 }
 
 .site-footer {
-  position: relative;
   background: var(--header-bg);  /* Match footer color to header */
   color: var(--header-color);
   border-top: 6px solid var(--header-underline);
@@ -287,13 +248,11 @@ body {
 .main-navigation {
   display: flex;
   align-items: center;
-  background: var(--header-color); /* Use accent color for nav background */
+  background: var(--main-color);
   padding: 15px 0;
   border-radius: 0px 0px 18px 18px;
   margin-top: 10px;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
+  position: relative;
 }
 
 .hamburger {
@@ -396,69 +355,6 @@ body {
 }
 .hamburger.open {
   background: var(--accent);
-}
-
-.image-slider {
-  width: 100%;
-  max-width: 1100px;
-  margin: 0 auto 32px auto;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 4px 24px rgba(0,30,84,0.07);
-  background: #fff;
-  height: 320px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.image-slider .slides {
-  display: flex;
-  transition: transform 0.5s ease;
-  width: 100%;
-  height: 100%;
-}
-
-.image-slider img {
-  width: 100%;
-  height: 320px;
-  object-fit: cover;
-  flex-shrink: 0;
-}
-
-.slider-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-80%);
-  background: rgba(13,145,221,0.7);
-  color: #fff;
-  border: none;
-  border-radius: 10%;
-  width: 38px;
-  height: 38px;
-  font-size: 1em;
-  text-align: center;
-  cursor: pointer;
-  z-index: 2;
-  opacity: 0.8;
-  transition: background 0.2s;
-}
-
-.slider-btn:hover {
-  background: var(--accent);
-  opacity: 1;
-}
-
-.slider-btn.prev {
-  left: 16px;
-}
-.slider-btn.next {
-  right: 16px;
-}
-
-/* Ensure footer stays at bottom */
-.site-footer {
-  margin-top: auto;
 }
 
 @media (max-width: 1400px) {
