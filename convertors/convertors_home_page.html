@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <title>Engineering Unit & Data Converters | Trends For Sale (TFS)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Precision engineering unit converters by TFS. IEEE-754 floating point converter, radix base converter, PCB mils, pressure, temperature, and data rates.">
+
+  <!-- Design System & Navbar Styles -->
+  <link rel="stylesheet" href="../common_css/design_system.css?v=2.0">
+  <link rel="stylesheet" href="../common_css/navbar.css?v=2.0">
+  <link rel="stylesheet" href="convertors.css?v=2.0">
+</head>
+<body>
+  <div class="site-wrapper">
+    <!-- Common Global Header & Mobile Drawer Mount Point -->
+    <div id="tfs-navbar" data-active="tools"></div>
+
+    <!-- Main Content -->
+    <main class="convertor-main">
+      <!-- Hero -->
+      <section class="conv-hero">
+        <div class="conv-hero-container">
+          <div class="badge-row">
+            <span class="badge badge-pulse">Precision Suite</span>
+            <span class="badge">Engineering &bull; Radix &bull; IEEE-754</span>
+          </div>
+          <h1 class="conv-title">Engineering <span class="gradient-text">Converters</span></h1>
+          <p class="conv-subtitle">
+            Instant, high-precision conversions across embedded computing standards, floating-point representations, and physical engineering measurements.
+          </p>
+
+          <!-- Domain Category Filter Pills -->
+          <div class="conv-category-filters" id="conv-category-filters">
+            <button class="cat-pill active" data-cat="all">All Domains</button>
+            <button class="cat-pill" data-cat="automotive">🚗 Automotive & Transport</button>
+            <button class="cat-pill" data-cat="embedded">💻 Embedded & Computing</button>
+            <button class="cat-pill" data-cat="mechanical">⚙️ Mechanical & Fluids</button>
+            <button class="cat-pill" data-cat="thermal">🌡️ Thermal & Physics</button>
+          </div>
+
+          <!-- Category Navigation Tabs -->
+          <div class="conv-tabs-bar" id="conv-tabs-bar">
+            <button class="conv-tab active" data-tab="fuel" data-cat="automotive">⛽ Fuel Economy & Auto</button>
+            <button class="conv-tab" data-tab="radix" data-cat="embedded">🧮 Radix & Base</button>
+            <button class="conv-tab" data-tab="ieee754" data-cat="embedded">🔬 IEEE-754 Float</button>
+            <button class="conv-tab" data-tab="datarate" data-cat="embedded">📡 Data Rate & Freq</button>
+            <button class="conv-tab" data-tab="length" data-cat="mechanical">📏 Length & PCB Mils</button>
+            <button class="conv-tab" data-tab="pressure" data-cat="mechanical">💨 Pressure & Bar</button>
+            <button class="conv-tab" data-tab="mass" data-cat="mechanical">⚖️ Mass & Weight</button>
+            <button class="conv-tab" data-tab="temp" data-cat="thermal">🌡️ Temperature</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Converters Container -->
+      <section class="conv-content-section">
+        <div class="section-container">
+
+          <!-- TAB: Automotive Fuel Economy & Consumption -->
+          <div class="conv-pane active" id="pane-fuel">
+            <div class="glass-card conv-card">
+              <div class="card-head">
+                <div class="head-left">
+                  <div class="title-with-badge">
+                    <h3>Automotive Fuel Economy & Consumption</h3>
+                    <span class="badge badge-accent">EPA / WLTP Standard</span>
+                  </div>
+                  <p>Bidirectional conversions between metric, US customary, and UK imperial distance-per-volume units, plus inverse European fuel consumption.</p>
+                </div>
+              </div>
+
+              <!-- Quick Presets -->
+              <div class="fuel-presets-row">
+                <span class="preset-label">Quick Presets:</span>
+                <button type="button" class="preset-btn" data-kmpl="25">⚡ City Hybrid (25 km/L)</button>
+                <button type="button" class="preset-btn" data-kmpl="15">🚗 Modern Sedan (15 km/L)</button>
+                <button type="button" class="preset-btn" data-kmpl="10">🚙 SUV / Crossover (10 km/L)</button>
+                <button type="button" class="preset-btn" data-kmpl="6.5">🏎️ High-Power V8 (6.5 km/L)</button>
+              </div>
+
+              <!-- Live 5-Way Synchronized Matrix Grid -->
+              <div class="matrix-heading-wrap">
+                <h4 class="section-subhead">Live Synchronized Multi-Unit Matrix</h4>
+                <span class="matrix-subtext">Type in any box to recalculate all units simultaneously in real time</span>
+              </div>
+              
+              <div class="fuel-matrix-grid">
+                <!-- 1. KMPL -->
+                <div class="fuel-input-card">
+                  <div class="block-top">
+                    <label for="fuel-kmpl">
+                      <span class="fuel-unit-code">KMPL</span>
+                      <span class="fuel-unit-desc">Kilometers per Liter</span>
+                    </label>
+                    <button class="copy-btn" data-target="fuel-kmpl" title="Copy Value">Copy</button>
+                  </div>
+                  <div class="fuel-input-wrap">
+                    <input type="number" id="fuel-kmpl" class="conv-input font-mono" value="15" step="any" min="0">
+                    <span class="fuel-unit-tag">km/L</span>
+                  </div>
+                  <span class="fuel-desc-hint">Standard Metric (Distance / Fuel)</span>
+                </div>
+
+                <!-- 2. MPL -->
+                <div class="fuel-input-card">
+                  <div class="block-top">
+                    <label for="fuel-mpl">
+                      <span class="fuel-unit-code">MPL</span>
+                      <span class="fuel-unit-desc">Miles per Liter</span>
+                    </label>
+                    <button class="copy-btn" data-target="fuel-mpl" title="Copy Value">Copy</button>
+                  </div>
+                  <div class="fuel-input-wrap">
+                    <input type="number" id="fuel-mpl" class="conv-input font-mono" step="any" min="0">
+                    <span class="fuel-unit-tag">mi/L</span>
+                  </div>
+                  <span class="fuel-desc-hint">Imperial Miles per Metric Liter</span>
+                </div>
+
+                <!-- 3. MPG US -->
+                <div class="fuel-input-card">
+                  <div class="block-top">
+                    <label for="fuel-mpgus">
+                      <span class="fuel-unit-code">MPG (US)</span>
+                      <span class="fuel-unit-desc">Miles per US Gallon</span>
+                    </label>
+                    <button class="copy-btn" data-target="fuel-mpgus" title="Copy Value">Copy</button>
+                  </div>
+                  <div class="fuel-input-wrap">
+                    <input type="number" id="fuel-mpgus" class="conv-input font-mono" step="any" min="0">
+                    <span class="fuel-unit-tag">MPG US</span>
+                  </div>
+                  <span class="fuel-desc-hint">1 US Gal = 3.78541 L (EPA standard)</span>
+                </div>
+
+                <!-- 4. MPG UK -->
+                <div class="fuel-input-card">
+                  <div class="block-top">
+                    <label for="fuel-mpguk">
+                      <span class="fuel-unit-code">MPG (UK)</span>
+                      <span class="fuel-unit-desc">Miles per Imperial Gallon</span>
+                    </label>
+                    <button class="copy-btn" data-target="fuel-mpguk" title="Copy Value">Copy</button>
+                  </div>
+                  <div class="fuel-input-wrap">
+                    <input type="number" id="fuel-mpguk" class="conv-input font-mono" step="any" min="0">
+                    <span class="fuel-unit-tag">MPG UK</span>
+                  </div>
+                  <span class="fuel-desc-hint">1 Imperial Gal = 4.54609 L (UK standard)</span>
+                </div>
+
+                <!-- 5. L/100KM -->
+                <div class="fuel-input-card highlight-card">
+                  <div class="block-top">
+                    <label for="fuel-lp100km">
+                      <span class="fuel-unit-code">L/100KM</span>
+                      <span class="fuel-unit-desc">Liters per 100 Kilometers</span>
+                    </label>
+                    <button class="copy-btn" data-target="fuel-lp100km" title="Copy Value">Copy</button>
+                  </div>
+                  <div class="fuel-input-wrap">
+                    <input type="number" id="fuel-lp100km" class="conv-input font-mono" step="any" min="0">
+                    <span class="fuel-unit-tag">L/100km</span>
+                  </div>
+                  <span class="fuel-desc-hint">Inverse Fuel Consumption Standard</span>
+                </div>
+              </div>
+
+              <!-- Two-Way Direct Unit Calculator -->
+              <div class="matrix-heading-wrap" style="margin-top: 36px;">
+                <h4 class="section-subhead">Direct Two-Way Unit Calculator</h4>
+                <span class="matrix-subtext">Select specific source and target units with instant swap</span>
+              </div>
+              <div class="standard-converter-grid">
+                <div class="conv-field">
+                  <label for="fuel-calc-input">Input Value:</label>
+                  <input type="number" id="fuel-calc-input" class="conv-input font-mono" value="15" step="any" min="0">
+                  <select id="fuel-from-unit" class="conv-select">
+                    <option value="kmpl" selected>Kilometers per Liter (KMPL)</option>
+                    <option value="mpl">Miles per Liter (MPL)</option>
+                    <option value="mpgus">Miles per US Gallon (MPG US)</option>
+                    <option value="mpguk">Miles per Imperial Gallon (MPG UK)</option>
+                    <option value="lp100km">Liters per 100km (L/100KM)</option>
+                  </select>
+                </div>
+
+                <div class="swap-btn-wrap">
+                  <button id="swap-fuel-btn" class="swap-btn" title="Swap Units">&harr;</button>
+                </div>
+
+                <div class="conv-field">
+                  <label for="fuel-calc-output">Converted Result:</label>
+                  <input type="text" id="fuel-calc-output" class="conv-input result-highlight font-mono" readonly>
+                  <select id="fuel-to-unit" class="conv-select">
+                    <option value="kmpl">Kilometers per Liter (KMPL)</option>
+                    <option value="mpl">Miles per Liter (MPL)</option>
+                    <option value="mpgus" selected>Miles per US Gallon (MPG US)</option>
+                    <option value="mpguk">Miles per Imperial Gallon (MPG UK)</option>
+                    <option value="lp100km">Liters per 100km (L/100KM)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Mathematical Conversion Formula Callout -->
+              <div class="fuel-formula-callout">
+                <div class="formula-icon">📐</div>
+                <div class="formula-content">
+                  <span class="formula-title">Automotive Conversion Mathematics:</span>
+                  <div class="formula-grid">
+                    <div class="formula-item">
+                      <span class="formula-name">KMPL &harr; MPG (US)</span>
+                      <code>MPG_US = KMPL &times; 2.352146</code>
+                    </div>
+                    <div class="formula-item">
+                      <span class="formula-name">KMPL &harr; MPG (UK)</span>
+                      <code>MPG_UK = KMPL &times; 2.824809</code>
+                    </div>
+                    <div class="formula-item">
+                      <span class="formula-name">KMPL &harr; MPL</span>
+                      <code>MPL = KMPL &divide; 1.609344</code>
+                    </div>
+                    <div class="formula-item">
+                      <span class="formula-name">KMPL &harr; L/100km</span>
+                      <code>L/100km = 100 &divide; KMPL</code> (Inverse)
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 1: Radix & Data Base Converter -->
+          <div class="conv-pane" id="pane-radix">
+            <div class="glass-card conv-card">
+              <div class="card-head">
+                <div class="head-left">
+                  <h3>Multi-Base Radix Converter</h3>
+                  <p>Convert numbers bidirectionally between Decimal, Hexadecimal, Binary, Octal, and ASCII text.</p>
+                </div>
+                <div class="bit-width-selector">
+                  <label for="radix-bits">Bit Width:</label>
+                  <select id="radix-bits" class="conv-select">
+                    <option value="8">8-bit (Byte)</option>
+                    <option value="16">16-bit (Word)</option>
+                    <option value="32" selected>32-bit (DWord)</option>
+                    <option value="64">64-bit (QWord)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="radix-grid">
+                <div class="input-block">
+                  <div class="block-top">
+                    <label for="radix-dec">Decimal (Base 10)</label>
+                    <button class="copy-btn" data-target="radix-dec">Copy</button>
+                  </div>
+                  <input type="text" id="radix-dec" class="font-mono conv-input" value="1337" autocomplete="off">
+                </div>
+
+                <div class="input-block">
+                  <div class="block-top">
+                    <label for="radix-hex">Hexadecimal (Base 16)</label>
+                    <button class="copy-btn" data-target="radix-hex">Copy</button>
+                  </div>
+                  <input type="text" id="radix-hex" class="font-mono conv-input" value="0x539" autocomplete="off">
+                </div>
+
+                <div class="input-block">
+                  <div class="block-top">
+                    <label for="radix-bin">Binary (Base 2)</label>
+                    <button class="copy-btn" data-target="radix-bin">Copy</button>
+                  </div>
+                  <input type="text" id="radix-bin" class="font-mono conv-input" value="0000 0101 0011 1001" autocomplete="off">
+                </div>
+
+                <div class="input-block">
+                  <div class="block-top">
+                    <label for="radix-oct">Octal (Base 8)</label>
+                    <button class="copy-btn" data-target="radix-oct">Copy</button>
+                  </div>
+                  <input type="text" id="radix-oct" class="font-mono conv-input" value="2471" autocomplete="off">
+                </div>
+              </div>
+
+              <!-- Two's complement & Byte Swap Summary -->
+              <div class="meta-calc-row">
+                <div class="meta-item">
+                  <span class="meta-label">Signed Value (Two's Compl):</span>
+                  <span class="meta-val font-mono" id="radix-signed">1337</span>
+                </div>
+                <div class="meta-item">
+                  <span class="meta-label">Endianness Flip (Swap Bytes):</span>
+                  <span class="meta-val font-mono" id="radix-endian">0x39050000</span>
+                </div>
+                <div class="meta-item">
+                  <span class="meta-label">ASCII Character Representation:</span>
+                  <span class="meta-val font-mono" id="radix-char">.S9</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 2: IEEE-754 Floating Point Converter -->
+          <div class="conv-pane" id="pane-ieee754">
+            <div class="glass-card conv-card">
+              <div class="card-head">
+                <div class="head-left">
+                  <h3>IEEE-754 Floating-Point Analyzer (32-bit Single Precision)</h3>
+                  <p>Examine the sign bit, biased exponent, and mantissa for single-precision floats.</p>
+                </div>
+                <span class="badge">Binary32</span>
+              </div>
+
+              <div class="ieee-inputs-row">
+                <div class="input-block">
+                  <label for="ieee-float">Decimal Floating Point</label>
+                  <input type="text" id="ieee-float" class="font-mono conv-input" value="-12.375">
+                </div>
+                <div class="input-block">
+                  <label for="ieee-hex">Hex Representation (32-bit)</label>
+                  <input type="text" id="ieee-hex" class="font-mono conv-input" value="0xC1460000">
+                </div>
+              </div>
+
+              <!-- Visual Bit Breakdown Graphic -->
+              <div class="ieee-breakdown-box">
+                <div class="bit-segment sign-seg">
+                  <span class="seg-title">Sign (1 bit)</span>
+                  <span class="seg-bits font-mono" id="ieee-sign-bit">1</span>
+                  <span class="seg-label" id="ieee-sign-desc">Negative (-)</span>
+                </div>
+                <div class="bit-segment exp-seg">
+                  <span class="seg-title">Exponent (8 bits, Bias 127)</span>
+                  <span class="seg-bits font-mono" id="ieee-exp-bits">10000010</span>
+                  <span class="seg-label" id="ieee-exp-desc">Dec: 130 &rarr; 2^(130-127) = 2^3</span>
+                </div>
+                <div class="bit-segment mantissa-seg">
+                  <span class="seg-title">Fraction / Mantissa (23 bits)</span>
+                  <span class="seg-bits font-mono" id="ieee-mantissa-bits">10001100000000000000000</span>
+                  <span class="seg-label" id="ieee-mantissa-desc">1 + 0.546875 = 1.546875</span>
+                </div>
+              </div>
+
+              <div class="ieee-formula-card">
+                <span class="formula-label">Calculated Formula:</span>
+                <code id="ieee-formula-eval">(-1)^1 &times; 2^3 &times; 1.546875 = -12.375</code>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 3: Length & PCB Mils -->
+          <div class="conv-pane" id="pane-length">
+            <div class="glass-card conv-card">
+              <div class="card-head">
+                <div class="head-left">
+                  <h3>Length & Hardware Track Widths (Mils &larr;&rarr; mm)</h3>
+                  <p>Ideal for PCB designers, mechanical tolerance verification, and track clearance.</p>
+                </div>
+              </div>
+
+              <div class="standard-converter-grid">
+                <div class="conv-field">
+                  <label for="len-input">From Value:</label>
+                  <input type="number" id="len-input" class="conv-input" value="10" step="any">
+                  <select id="len-from-unit" class="conv-select">
+                    <option value="mil" selected>Mils (thou / 0.001 in)</option>
+                    <option value="mm">Millimeters (mm)</option>
+                    <option value="cm">Centimeters (cm)</option>
+                    <option value="m">Meters (m)</option>
+                    <option value="in">Inches (in)</option>
+                    <option value="ft">Feet (ft)</option>
+                  </select>
+                </div>
+
+                <div class="swap-btn-wrap">
+                  <button id="swap-len-btn" class="swap-btn" title="Swap Units">&harr;</button>
+                </div>
+
+                <div class="conv-field">
+                  <label for="len-output">Converted Result:</label>
+                  <input type="text" id="len-output" class="conv-input result-highlight" readonly>
+                  <select id="len-to-unit" class="conv-select">
+                    <option value="mil">Mils (thou)</option>
+                    <option value="mm" selected>Millimeters (mm)</option>
+                    <option value="cm">Centimeters (cm)</option>
+                    <option value="m">Meters (m)</option>
+                    <option value="in">Inches (in)</option>
+                    <option value="ft">Feet (ft)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Quick PCB Trace Presets -->
+              <div class="quick-presets-box">
+                <span class="presets-label">Common PCB Trace Widths:</span>
+                <div class="presets-chips">
+                  <button class="chip-preset" data-unit="mil" data-val="6">6 mil (0.152 mm) Signal</button>
+                  <button class="chip-preset" data-unit="mil" data-val="8">8 mil (0.203 mm) Standard</button>
+                  <button class="chip-preset" data-unit="mil" data-val="12">12 mil (0.305 mm) Power</button>
+                  <button class="chip-preset" data-unit="mil" data-val="25">25 mil (0.635 mm) Heavy Trace</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 4: Data Rate & Clock Frequency -->
+          <div class="conv-pane" id="pane-datarate">
+            <div class="glass-card conv-card">
+              <div class="card-head">
+                <div class="head-left">
+                  <h3>Data Rate, Baud & Clock Period Solver</h3>
+                  <p>Convert serial baud rates, ethernet bandwidth, and clock frequencies into clock period duration (&tau;).</p>
+                </div>
+              </div>
+
+              <div class="standard-converter-grid">
+                <div class="conv-field">
+                  <label for="freq-input">Frequency / Baud Rate:</label>
+                  <input type="number" id="freq-input" class="conv-input" value="16" step="any">
+                  <select id="freq-unit" class="conv-select">
+                    <option value="hz">Hertz (Hz / bps)</option>
+                    <option value="khz">Kilohertz (kHz / kbps)</option>
+                    <option value="mhz" selected>Megahertz (MHz / Mbps)</option>
+                    <option value="ghz">Gigahertz (GHz / Gbps)</option>
+                  </select>
+                </div>
+
+                <div class="swap-btn-wrap">
+                  <span class="equals-icon">&rarr;</span>
+                </div>
+
+                <div class="conv-field">
+                  <label for="period-output">Clock Period Duration (&tau;):</label>
+                  <input type="text" id="period-output" class="conv-input result-highlight font-mono" readonly value="62.5 ns">
+                  <span class="meta-label" id="period-desc">T = 1 / Frequency</span>
+                </div>
+              </div>
+
+              <!-- Bus Speed Reference Presets -->
+              <div class="quick-presets-box">
+                <span class="presets-label">Standard Embedded Clocks & Speeds:</span>
+                <div class="presets-chips">
+                  <button class="chip-preset-freq" data-val="115200" data-unit="hz">115.2 kbps UART (8.68 &mu;s)</button>
+                  <button class="chip-preset-freq" data-val="500000" data-unit="hz">500 kbps CAN (2.0 &mu;s)</button>
+                  <button class="chip-preset-freq" data-val="16" data-unit="mhz">16 MHz Arduino (62.5 ns)</button>
+                  <button class="chip-preset-freq" data-val="80" data-unit="mhz">80 MHz CAN-FD Clock (12.5 ns)</button>
+                  <button class="chip-preset-freq" data-val="240" data-unit="mhz">240 MHz ESP32-S3 (4.16 ns)</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 5: Pressure (Automotive & Sensor) -->
+          <div class="conv-pane" id="pane-pressure">
+            <div class="glass-card conv-card">
+              <div class="card-head">
+                <div class="head-left">
+                  <h3>Pressure & Manifold Converter (PSI, Bar, kPa)</h3>
+                  <p>Convert tire pressure, turbo boost, and barometric sensor measurements.</p>
+                </div>
+              </div>
+
+              <div class="standard-converter-grid">
+                <div class="conv-field">
+                  <label for="press-input">From Value:</label>
+                  <input type="number" id="press-input" class="conv-input" value="32" step="any">
+                  <select id="press-from-unit" class="conv-select">
+                    <option value="psi" selected>Pounds per sq inch (PSI)</option>
+                    <option value="bar">Bar (bar)</option>
+                    <option value="kpa">Kilopascal (kPa)</option>
+                    <option value="pa">Pascal (Pa)</option>
+                    <option value="atm">Atmosphere (atm)</option>
+                  </select>
+                </div>
+
+                <div class="swap-btn-wrap">
+                  <button id="swap-press-btn" class="swap-btn" title="Swap Units">&harr;</button>
+                </div>
+
+                <div class="conv-field">
+                  <label for="press-output">Converted Result:</label>
+                  <input type="text" id="press-output" class="conv-input result-highlight font-mono" readonly>
+                  <select id="press-to-unit" class="conv-select">
+                    <option value="psi">Pounds per sq inch (PSI)</option>
+                    <option value="bar" selected>Bar (bar)</option>
+                    <option value="kpa">Kilopascal (kPa)</option>
+                    <option value="pa">Pascal (Pa)</option>
+                    <option value="atm">Atmosphere (atm)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 6: Temperature -->
+          <div class="conv-pane" id="pane-temp">
+            <div class="glass-card conv-card">
+              <div class="card-head">
+                <div class="head-left">
+                  <h3>Temperature Converter (Celsius &larr;&rarr; Fahrenheit &larr;&rarr; Kelvin)</h3>
+                  <p>Convert microcontroller sensor thermistor and ambient temperatures.</p>
+                </div>
+              </div>
+
+              <div class="standard-converter-grid">
+                <div class="conv-field">
+                  <label for="temp-input">From Temperature:</label>
+                  <input type="number" id="temp-input" class="conv-input" value="25" step="any">
+                  <select id="temp-from-unit" class="conv-select">
+                    <option value="c" selected>Celsius (&deg;C)</option>
+                    <option value="f">Fahrenheit (&deg;F)</option>
+                    <option value="k">Kelvin (K)</option>
+                  </select>
+                </div>
+
+                <div class="swap-btn-wrap">
+                  <button id="swap-temp-btn" class="swap-btn" title="Swap Units">&harr;</button>
+                </div>
+
+                <div class="conv-field">
+                  <label for="temp-output">Converted Result:</label>
+                  <input type="text" id="temp-output" class="conv-input result-highlight font-mono" readonly>
+                  <select id="temp-to-unit" class="conv-select">
+                    <option value="c">Celsius (&deg;C)</option>
+                    <option value="f" selected>Fahrenheit (&deg;F)</option>
+                    <option value="k">Kelvin (K)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 7: Mass & Weight -->
+          <div class="conv-pane" id="pane-mass">
+            <div class="glass-card conv-card">
+              <div class="card-head">
+                <div class="head-left">
+                  <h3>Mass & Weight Converter</h3>
+                  <p>Convert payloads, component weights, and force calculations.</p>
+                </div>
+              </div>
+
+              <div class="standard-converter-grid">
+                <div class="conv-field">
+                  <label for="mass-input">From Mass:</label>
+                  <input type="number" id="mass-input" class="conv-input" value="1" step="any">
+                  <select id="mass-from-unit" class="conv-select">
+                    <option value="kg" selected>Kilograms (kg)</option>
+                    <option value="g">Grams (g)</option>
+                    <option value="mg">Milligrams (mg)</option>
+                    <option value="lb">Pounds (lb)</option>
+                    <option value="oz">Ounces (oz)</option>
+                  </select>
+                </div>
+
+                <div class="swap-btn-wrap">
+                  <button id="swap-mass-btn" class="swap-btn" title="Swap Units">&harr;</button>
+                </div>
+
+                <div class="conv-field">
+                  <label for="mass-output">Converted Result:</label>
+                  <input type="text" id="mass-output" class="conv-input result-highlight font-mono" readonly>
+                  <select id="mass-to-unit" class="conv-select">
+                    <option value="kg">Kilograms (kg)</option>
+                    <option value="g">Grams (g)</option>
+                    <option value="mg">Milligrams (mg)</option>
+                    <option value="lb" selected>Pounds (lb)</option>
+                    <option value="oz">Ounces (oz)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+    </main>
+
+    <!-- Common Global Site Footer Mount Point -->
+    <div id="tfs-footer"></div>
+  </div>
+
+  <!-- Notification Toast -->
+  <div id="copy-toast" class="copy-toast">Copied to clipboard!</div>
+
+  <!-- Scripts -->
+  <script src="../common_js/navbar.js"></script>
+  <script src="../common_js/auth.js"></script>
+  <script src="convertors.js"></script>
+</body>
+</html>

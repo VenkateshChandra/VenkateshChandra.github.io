@@ -1,83 +1,221 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
-  <title>TFS Home</title>
+  <title>About Us | Trends For Sale (TFS)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="about_page.css">
-  <link rel="stylesheet" href="about_page_mobile.css">
+  <meta name="description" content="Learn about Trends For Sale (TFS) - High-performance, client-side, zero-install engineering tools for embedded developers, automotive engineers, and makers.">
+
+  <!-- Design System & Navbar Styles -->
+  <link rel="stylesheet" href="../common_css/design_system.css?v=2.0">
+  <link rel="stylesheet" href="../common_css/navbar.css?v=2.0">
+  <link rel="stylesheet" href="about_page.css?v=2.0">
 </head>
 <body>
-  <div class="main-wrapper">
-    <header class="site-header">
-      <div class="site-branding">
-        <h1 class="site-title">Trends For Sale</h1>
-        <h4 class="site-description">...Beyond The Trends, Into Your Hands</h4>
-      </div>
-      <nav class="main-navigation">
-        <button class="hamburger" id="hamburger-btn" aria-label="Open menu">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-        <ul class="nav-menu">
-          <li><a href="../home/home_page.html" >Home</a></li>
-          <li><a href="../common_pages/coming_soon.html" class="active">About</a></li>
-          <li><a href="../contact/contact_home_page.html">Contact</a></li>
-          <li class="dropdown">
-            <a href="#" class="dropbtn">Tools</a>
-            <ul class="dropdown-content">
-              <li><a href="../serial_term/serial_term.html">Serial Terminal</a></li>
-              <li><a href="../common_pages/coming_soon.html">CAN Analysis Tool</a></li>
-            </ul>
-          </li>
-          <li><a href="../blog/blog_home_page.html">Blog</a></li>
-          <li><a href="../common_pages/coming_soon.html">Shop</a></li>
-        </ul>
-      </nav>
-      <nav class="mobile-nav" id="mobile-nav">
-        <button class="close-mobile-nav" id="close-mobile-nav" aria-label="Close menu">&times;</button>
-        <ul>
-          <li><a href="../home/home_page.html">Home</a></li>
-          <li><a href="../common_pages/coming_soon.html">About</a></li>
-          <li><a href="../common_pages/coming_soon.html">Contact</a></li>
-          <li><a href="../serial_term/serial_term.html">Serial Terminal</a></li>
-          <li><a href="../common_pages/coming_soon.html">CAN Analysis Tool</a></li>
-          <li><a href="../blog/blog_home_page.html">Blog</a></li>
-          <li><a href="../common_pages/coming_soon.html">Shop</a></li>
-        </ul>
-      </nav>
-    </header>
-    <main class="site-content">
-      <section class="featured-post">
-        <div class="featured-content">
-          <h1 class="entry-title">Welcome to TFS Blog</h1>
-          <div class="entry-meta">
+  <div class="site-wrapper">
+    <!-- Common Global Header & Mobile Drawer Mount Point -->
+    <div id="tfs-navbar" data-active="about"></div>
+
+    <!-- Main Content -->
+    <main class="about-main">
+      <!-- Hero Section -->
+      <section class="about-hero">
+        <div class="about-hero-container">
+          <div class="hero-badge-row">
+            <span class="badge badge-pulse">Our Mission</span>
+            <span class="badge">Hardware &bull; Automotive &bull; Embedded</span>
           </div>
-          <div class="entry-body">
-            <p>
-              Stay ahead with trending tech news, DIY projects, and exclusive deals on electronics & software.
-            </p>
+          <h1 class="about-title">Built for Engineers, by <span class="gradient-text">Engineers</span></h1>
+          <p class="about-tagline">&ldquo;Beyond The Trends, Into Your Hands&rdquo;</p>
+          <p class="about-subtitle">
+            High-performance, client-side, zero-install engineering tools for embedded developers, automotive engineers, and makers.
+          </p>
+        </div>
+      </section>
+
+      <!-- Core Pillars -->
+      <section class="about-section">
+        <div class="section-container">
+          <div class="section-header">
+            <span class="section-eyebrow">Engineering Philosophy</span>
+            <h2 class="section-heading">Why Trends For Sale (TFS)?</h2>
+            <p class="section-subtext">Eliminating the friction between physical hardware and web tooling.</p>
+          </div>
+
+          <div class="pillars-grid">
+            <div class="glass-card pillar-card">
+              <div class="pillar-icon-box">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                </svg>
+              </div>
+              <h3 class="pillar-title">Zero-Install Hardware Control</h3>
+              <p class="pillar-desc">
+                No bulky IDEs, driver installers, or heavy desktop runtimes required. We harness browser-native Web Serial and lightweight local WebSocket bridges to speak directly to microcontrollers and CAN hardware.
+              </p>
+            </div>
+
+            <div class="glass-card pillar-card">
+              <div class="pillar-icon-box purple">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+              </div>
+              <h3 class="pillar-title">Client-Side Security & Privacy</h3>
+              <p class="pillar-desc">
+                Your proprietary UART telemetry, CAN bus payloads, and firmware logs run locally within your browser sandbox. Packets are parsed on the client machine and never sent to external servers.
+              </p>
+            </div>
+
+            <div class="glass-card pillar-card">
+              <div class="pillar-icon-box emerald">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                </svg>
+              </div>
+              <h3 class="pillar-title">Deterministic High Performance</h3>
+              <p class="pillar-desc">
+                Crafted using lean Vanilla web standards, CSS design tokens, and optimized JavaScript event loops to deliver 60+ FPS telemetry rendering, instant radix transformations, and reliable microsecond-level timing.
+              </p>
+            </div>
           </div>
         </div>
       </section>
-      <aside class="sidebar">
-        <div class="widget">
-          <h3 class="widget-title">Quick Links</h3>
-          <ul>
-            <li><a href="serial_term/serial_term.html">Serial Terminal</a></li>
-            <li><a href="#">Documentation</a></li>
-            <li><a href="#">Support</a></li>
-          </ul>
+
+      <!-- Team & Leadership Section -->
+      <section class="team-section">
+        <div class="section-container">
+          <div class="section-header">
+            <span class="section-eyebrow">The Builders</span>
+            <h2 class="section-heading">Meet the Core Team</h2>
+            <p class="section-subtext">The minds driving the architecture, firmware tooling, and quality assurance behind TFS.</p>
+          </div>
+
+          <div class="team-grid">
+            <!-- Developer Card -->
+            <div class="glass-card team-card">
+              <div class="team-card-top">
+                <div class="avatar-badge">VC</div>
+                <div class="team-meta">
+                  <span class="team-role-pill">Lead Developer & Architect</span>
+                  <h3 class="team-name">Venkatesh Chandra</h3>
+                  <span class="team-designation">Senior Embedded Software Engineer &amp; Full-Stack Developer</span>
+                </div>
+              </div>
+              <p class="team-bio">
+                Specializing in automotive protocols, MCU firmware, and high-performance in-browser hardware tooling. Passionate about bridging low-level embedded hardware with modern, responsive web engineering to simplify diagnostics, prototyping, and bench testing.
+              </p>
+              <span class="skills-heading">Technical Focus Areas:</span>
+              <div class="team-tags">
+                <span class="team-tag">Automotive Protocols (CAN/LIN)</span>
+                <span class="team-tag">Vector vxlapi Integration</span>
+                <span class="team-tag">Web Serial API</span>
+                <span class="team-tag">MCU Firmware</span>
+                <span class="team-tag">Full-Stack Architecture</span>
+              </div>
+              <div class="team-actions">
+                <a href="https://www.linkedin.com/in/venkateshchandra-a-/" target="_blank" rel="noopener noreferrer" class="linkedin-btn">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9h2.8v8.37h-2.8v-8.37M7.86 6.34a1.64 1.64 0 0 0-1.66 1.66c0 .92.74 1.66 1.66 1.66s1.66-.74 1.66-1.66A1.64 1.64 0 0 0 7.86 6.34z"/>
+                  </svg>
+                  Connect on LinkedIn &rarr;
+                </a>
+              </div>
+            </div>
+
+            <!-- QA Tester Card -->
+            <div class="glass-card team-card">
+              <div class="team-card-top">
+                <div class="avatar-badge purple">MK</div>
+                <div class="team-meta">
+                  <span class="team-role-pill" style="color: var(--accent-purple); background: rgba(168, 85, 247, 0.1); border-color: rgba(168, 85, 247, 0.3);">Quality Assurance Lead</span>
+                  <h3 class="team-name">Mani Kumari Amburu</h3>
+                  <span class="team-designation">Lead Test Engineer</span>
+                </div>
+              </div>
+              <p class="team-bio">
+                Leading the verification, validation, and rigorous testing across all TFS hardware utilities. Specializing in manual testing, embedded protocol validation, Web Serial &amp; CAN bus hardware validation, and ensuring rock-solid cross-platform stability across real-world workbench setups.
+              </p>
+              <span class="skills-heading">Testing Scope &amp; Focus:</span>
+              <div class="team-tags">
+                <span class="team-tag">Manual Testing</span>
+                <span class="team-tag">Embedded Protocol Validation</span>
+                <span class="team-tag">Web Serial &amp; CAN Hardware Testing</span>
+                <span class="team-tag">Cross-Platform Stability</span>
+                <span class="team-tag">Edge-Case &amp; Regression QA</span>
+              </div>
+              <div class="team-actions">
+                <a href="https://www.linkedin.com/in/mani-kumari-amburu-63434b19a/" target="_blank" rel="noopener noreferrer" class="linkedin-btn">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9h2.8v8.37h-2.8v-8.37M7.86 6.34a1.64 1.64 0 0 0-1.66 1.66c0 .92.74 1.66 1.66 1.66s1.66-.74 1.66-1.66A1.64 1.64 0 0 0 7.86 6.34z"/>
+                  </svg>
+                  Connect on LinkedIn &rarr;
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
-      </aside>
+      </section>
+
+      <!-- Architecture Stats -->
+      <section class="stats-section">
+        <div class="section-container">
+          <div class="stats-grid">
+            <div class="glass-card stat-card">
+              <div class="stat-number">0</div>
+              <div class="stat-label">Drivers Needed</div>
+              <p class="stat-desc">Native browser Web Serial API</p>
+            </div>
+            <div class="glass-card stat-card">
+              <div class="stat-number">100%</div>
+              <div class="stat-label">Client-Side Sandbox</div>
+              <p class="stat-desc">Zero packet leakage to external servers</p>
+            </div>
+            <div class="glass-card stat-card">
+              <div class="stat-number">3+</div>
+              <div class="stat-label">Hardware Interfaces</div>
+              <p class="stat-desc">Web Serial, Vector vxlapi &amp; SLCAN</p>
+            </div>
+            <div class="glass-card stat-card">
+              <div class="stat-number">10+</div>
+              <div class="stat-label">Converter Suites</div>
+              <p class="stat-desc">Fuel, Radix, IEEE-754, Pressure &amp; Temp</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Call to Action -->
+      <section class="about-cta-section">
+        <div class="section-container">
+          <div class="glass-card cta-card">
+            <h2 class="cta-title">Ready to Test Your Hardware?</h2>
+            <p class="cta-subtext">
+              Plug in your microcontroller, Vector hardware, or USB-to-UART adapter and experience the power of in-browser engineering tools.
+            </p>
+            <div class="cta-btn-group">
+              <a href="../serial_term/serial_term.html" class="btn btn-primary">
+                Launch Serial Terminal &rarr;
+              </a>
+              <a href="../can_analysis/can_analyzer.html" class="btn btn-secondary">
+                Launch CAN Analyzer &rarr;
+              </a>
+              <a href="../convertors/convertors_home_page.html" class="btn btn-secondary">
+                Unit Converters &rarr;
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
-    <footer class="site-footer">
-      <div class="footer-content">
-        &copy; 2025 TFS &mdash; All rights reserved.
-      </div>
-    </footer>
+
+    <!-- Common Global Site Footer Mount Point -->
+    <div id="tfs-footer"></div>
   </div>
-  <script src="about_page.js"></script>
+
+  <!-- Scripts -->
+  <script src="../common_js/navbar.js"></script>
+  <script src="../common_js/auth.js"></script>
 </body>
 </html>

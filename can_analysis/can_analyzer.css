@@ -1,0 +1,659 @@
+/* ===================================================================
+   TRENDS FOR SALE (TFS) - CAN BUS PROTOCOL ANALYZER STYLES
+   =================================================================== */
+
+.can-app-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+/* -------------------------------------------------------------------
+   CAN Header & Action Bar
+   ------------------------------------------------------------------- */
+.can-header {
+  height: var(--header-height);
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-card);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  gap: 16px;
+  flex-shrink: 0;
+  z-index: 100;
+  box-shadow: var(--shadow-sm);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.can-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.can-logo-pill {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, #a855f7 0%, #6366f1 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 12px rgba(168, 85, 247, 0.35);
+  color: #ffffff;
+}
+
+.can-brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.can-title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--text-primary);
+  line-height: 1.1;
+}
+
+.can-badge {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--accent-purple);
+  letter-spacing: 0.05em;
+}
+
+.can-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.control-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.control-group label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.can-select {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-sm);
+  padding: 6px 10px;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  outline: none;
+  cursor: pointer;
+  transition: border-color var(--transition-fast);
+}
+
+.can-select:focus {
+  border-color: var(--accent-cyan);
+}
+
+.can-select-sm {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-sm);
+  padding: 5px 8px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  outline: none;
+}
+
+.can-icon-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-primary);
+  border: 1px solid var(--border-card);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.can-icon-btn:hover {
+  border-color: var(--accent-purple);
+  box-shadow: 0 0 10px rgba(168, 85, 247, 0.3);
+  transform: translateY(-1px);
+}
+
+/* Helper Bar for Vector Mode */
+.vector-helper-bar {
+  background: linear-gradient(90deg, rgba(99, 102, 241, 0.15), rgba(168, 85, 247, 0.15));
+  border-bottom: 1px solid rgba(168, 85, 247, 0.25);
+  padding: 8px 20px;
+}
+
+.helper-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 0.85rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* -------------------------------------------------------------------
+   Main Workspace: Trace Table & Sidebar
+   ------------------------------------------------------------------- */
+.can-workspace-main {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  overflow: hidden;
+}
+
+/* Left: Trace Section */
+.trace-section {
+  flex: 1 1 68%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.trace-card {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  background: #060a12;
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  min-height: 0;
+  padding: 0;
+}
+
+/* Trace Toolbar */
+.trace-control-bar {
+  background: #0d1527;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.trace-stats-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.trace-title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: #e2e8f0;
+}
+
+.bus-metrics {
+  display: flex;
+  gap: 8px;
+}
+
+.metric-badge {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #94a3b8;
+}
+
+.metric-badge strong {
+  color: var(--accent-cyan);
+}
+
+.trace-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.trace-filter-input input {
+  background: #060a12;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-sm);
+  padding: 4px 10px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: #f8fafc;
+  outline: none;
+  width: 170px;
+}
+
+.trace-filter-input input:focus {
+  border-color: var(--accent-cyan);
+}
+
+.can-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #cbd5e1;
+  font-family: var(--font-body);
+  font-size: 0.76rem;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.can-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.can-btn.active {
+  background: rgba(0, 229, 255, 0.18);
+  border-color: var(--accent-cyan);
+  color: var(--accent-cyan);
+}
+
+.can-btn.danger:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+/* -------------------------------------------------------------------
+   Trace Table Grid
+   ------------------------------------------------------------------- */
+.trace-table-header {
+  display: grid;
+  grid-template-columns: 48px 84px 64px 36px 84px 50px 40px 42px 1fr 100px;
+  background: #09101f;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 6px 12px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  user-select: none;
+}
+
+.trace-scroll-area {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  background: #060a12;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+}
+
+.trace-row {
+  display: grid;
+  grid-template-columns: 48px 84px 64px 36px 84px 50px 40px 42px 1fr 100px;
+  padding: 4px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  align-items: center;
+  transition: background var(--transition-fast);
+}
+
+.trace-row:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.trace-row.tx {
+  background: rgba(245, 158, 11, 0.06);
+}
+
+.trace-row .col-id {
+  font-weight: 700;
+  color: #38bdf8;
+}
+
+.trace-row.diag .col-id {
+  color: #c084fc;
+}
+
+.trace-row.hi-pri .col-id {
+  color: #f59e0b;
+}
+
+.trace-row .col-dir.rx { color: #10b981; }
+.trace-row .col-dir.tx { color: #f59e0b; }
+
+.trace-row .col-data {
+  letter-spacing: 0.06em;
+  color: #f1f5f9;
+}
+
+.trace-row .col-ascii {
+  color: #64748b;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.trace-empty-message {
+  text-align: center;
+  padding: 80px 20px;
+  color: #64748b;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+}
+
+/* -------------------------------------------------------------------
+   Right: Studio Sidebar
+   ------------------------------------------------------------------- */
+.studio-sidebar {
+  flex: 1 1 32%;
+  min-width: 330px;
+  max-width: 440px;
+  display: flex;
+  flex-direction: column;
+}
+
+.studio-card {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  padding: 16px;
+  overflow-y: auto;
+}
+
+.studio-tabs-header {
+  display: flex;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-sm);
+  padding: 3px;
+  margin-bottom: 16px;
+}
+
+.studio-tab {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 6px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.studio-tab.active {
+  background: var(--accent-purple);
+  color: #ffffff;
+  box-shadow: 0 0 10px rgba(168, 85, 247, 0.3);
+}
+
+.tab-pane {
+  display: none;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tab-pane.active {
+  display: flex;
+}
+
+/* Injector Form */
+.injector-header, .signals-header, .bridge-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.injector-header h4, .signals-header h4, .bridge-header h4 {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.tx-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.form-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.tx-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tx-input-group label {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.tx-input-group input {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-sm);
+  padding: 7px 10px;
+  color: var(--text-primary);
+  font-size: 0.84rem;
+  outline: none;
+}
+
+.cycle-scheduler-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-primary);
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+}
+
+.cycle-toggle-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.cycle-interval-wrap {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.cycle-interval-wrap input {
+  width: 60px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-card);
+  border-radius: 4px;
+  padding: 3px 6px;
+  font-size: 0.8rem;
+  color: var(--text-primary);
+  text-align: right;
+}
+
+.presets-box h5 {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.presets-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.preset-btn {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-sm);
+  padding: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  text-align: left;
+  transition: all var(--transition-fast);
+}
+
+.preset-btn:hover {
+  background: rgba(168, 85, 247, 0.15);
+  border-color: var(--accent-purple);
+  color: var(--text-primary);
+}
+
+/* DBC Signal Telemetry Cards */
+.signals-telemetry-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.signal-gauge-card {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sig-title {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.sig-val {
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--accent-cyan);
+  line-height: 1.2;
+}
+
+.sig-unit {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+}
+
+.sig-bar-wrap {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+  margin-top: 8px;
+  overflow: hidden;
+}
+
+.sig-bar {
+  height: 100%;
+  background: var(--accent-cyan);
+  transition: width 0.15s ease;
+}
+
+.sig-bar.speed {
+  background: var(--accent-purple);
+}
+
+/* Bridge Guide Box */
+.bridge-download-box, .bridge-steps-box {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+}
+
+.bridge-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.bridge-steps-list {
+  padding-left: 20px;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-top: 8px;
+}
+
+.bridge-steps-list code {
+  display: block;
+  background: #060a12;
+  border: 1px solid var(--border-card);
+  padding: 4px 8px;
+  border-radius: 4px;
+  color: var(--accent-cyan);
+  margin: 4px 0;
+}
+
+/* -------------------------------------------------------------------
+   Responsive Breakpoints
+   ------------------------------------------------------------------- */
+@media (max-width: 992px) {
+  .can-header {
+    height: auto;
+    padding: 12px 16px;
+    flex-wrap: wrap;
+  }
+  .can-workspace-main {
+    flex-direction: column;
+    overflow-y: auto;
+  }
+  .trace-section {
+    flex: 1 1 500px;
+    min-height: 420px;
+  }
+  .studio-sidebar {
+    max-width: 100%;
+  }
+}

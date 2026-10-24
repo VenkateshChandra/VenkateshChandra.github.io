@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <title>CAN Bus Protocol Analyzer | Trends For Sale (TFS)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Professional In-Browser CAN & CAN-FD Bus Protocol Analyzer by TFS. Supports Vector Hardware (vxlapi), Web Serial SLCAN, and built-in ECU simulation.">
+
+  <!-- CSP -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' ws: wss: https: data: 'unsafe-inline' 'unsafe-eval';">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="../common_css/design_system.css">
+  <link rel="stylesheet" href="../common_css/navbar.css">
+  <link rel="stylesheet" href="can_analyzer.css">
+</head>
+<body>
+  <div class="can-app-layout">
+    <!-- Workbench Header -->
+    <header class="can-header">
+      <div class="header-left">
+        <a href="../tools/tools_home.html" class="can-brand" title="Return to Tools Hub">
+          <div class="can-logo-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+            </svg>
+          </div>
+          <div class="can-brand-text">
+            <span class="can-title">TFS CAN Analyzer</span>
+            <span class="can-badge">CAN 2.0 &bull; CAN-FD</span>
+          </div>
+        </a>
+
+        <!-- Hardware Status Badge -->
+        <div class="status-indicator-badge" id="can-status-badge">
+          <span class="status-dot disconnected" id="can-status-dot"></span>
+          <span class="status-text" id="can-status-text">Disconnected</span>
+        </div>
+      </div>
+
+      <!-- Quick Action Toolbar -->
+      <div class="can-toolbar">
+        <!-- Interface Selector -->
+        <div class="control-group">
+          <label for="interface-select">Interface:</label>
+          <select id="interface-select" class="can-select">
+            <option value="vector" selected>🏢 Vector Hardware (vxlapi)</option>
+            <option value="serial">🔌 Web Serial (SLCAN / CANable)</option>
+            <option value="virtual">🎮 Virtual ECU Simulator</option>
+          </select>
+        </div>
+
+        <!-- Bitrate Selector -->
+        <div class="control-group">
+          <label for="bitrate-select">Nominal Baud:</label>
+          <select id="bitrate-select" class="can-select">
+            <option value="125000">125 kbps</option>
+            <option value="250000">250 kbps</option>
+            <option value="500000" selected>500 kbps (Standard)</option>
+            <option value="1000000">1 Mbps</option>
+          </select>
+        </div>
+
+        <!-- Connect Toggle Button -->
+        <button id="can-connect-btn" class="btn btn-primary btn-sm">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="5 3 19 12 5 21 5 3"/>
+          </svg>
+          <span id="can-connect-text">Connect Bus</span>
+        </button>
+
+        <div class="control-divider"></div>
+
+        <!-- Bridge Setup Guide Button -->
+        <button id="bridge-guide-btn" class="can-icon-btn" title="Vector Bridge Setup & Downloads">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+        </button>
+
+        <!-- Theme Toggle -->
+        <button id="theme-toggle-btn" class="can-icon-btn" title="Toggle Dark/Light Mode">
+          <span id="theme-icon-slot">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/>
+            </svg>
+          </span>
+        </button>
+
+        <!-- Tools Hub Link -->
+        <a href="../tools/tools_home.html" class="btn btn-secondary btn-sm" title="Tools Directory">
+          Tools Hub
+        </a>
+      </div>
+    </header>
+
+    <!-- Vector Bridge Connection Helper Alert (shows if disconnected in vector mode) -->
+    <div id="vector-helper-bar" class="vector-helper-bar" style="display: none;">
+      <div class="helper-content">
+        <span class="helper-icon">⚡</span>
+        <div class="helper-text">
+          <strong>Vector vxlapi Bridge Mode:</strong> To connect your VN16xx / CANcaseXL hardware, ensure the TFS Vector Bridge is running locally on port 9002.
+        </div>
+        <button id="open-bridge-modal-btn" class="btn btn-primary btn-sm">Get Bridge (.py / .bat)</button>
+      </div>
+    </div>
+
+    <!-- Main Workspace: Split Trace & Studio -->
+    <main class="can-workspace-main">
+      <!-- Left: Real-Time CAN Trace Stream -->
+      <section class="trace-section">
+        <div class="trace-card glass-card">
+          <!-- Trace Control Bar -->
+          <div class="trace-control-bar">
+            <div class="trace-stats-row">
+              <span class="trace-title">Live Bus Trace</span>
+              <div class="bus-metrics">
+                <span class="metric-badge">Frames: <strong id="total-frames-count">0</strong></span>
+                <span class="metric-badge">Bus Load: <strong id="bus-load-indicator">0%</strong></span>
+                <span class="metric-badge">FPS: <strong id="fps-indicator">0</strong></span>
+              </div>
+            </div>
+
+            <!-- Trace Action Buttons -->
+            <div class="trace-actions">
+              <!-- Filter Input -->
+              <div class="trace-filter-input">
+                <input type="text" id="id-filter-input" placeholder="Filter by ID (e.g. 0x100, 0x7E0)...">
+              </div>
+
+              <!-- Pause / Resume -->
+              <button id="pause-trace-btn" class="can-btn" title="Pause or Resume Stream">
+                ⏸️ Pause
+              </button>
+
+              <!-- Auto-Scroll Toggle -->
+              <button id="autoscroll-trace-btn" class="can-btn active" title="Toggle Auto-Scroll">
+                Auto-Scroll
+              </button>
+
+              <!-- Export Trace -->
+              <button id="export-trace-btn" class="can-btn" title="Export Log (.asc / .csv)">
+                Export
+              </button>
+
+              <!-- Clear Trace -->
+              <button id="clear-trace-btn" class="can-btn danger" title="Clear All Frames">
+                Clear
+              </button>
+            </div>
+          </div>
+
+          <!-- Trace Table Header -->
+          <div class="trace-table-header">
+            <span class="col-idx">#</span>
+            <span class="col-time">Time (s)</span>
+            <span class="col-dtime">&Delta;t (ms)</span>
+            <span class="col-ch">Ch</span>
+            <span class="col-id">CAN ID</span>
+            <span class="col-type">Type</span>
+            <span class="col-dir">Dir</span>
+            <span class="col-dlc">DLC</span>
+            <span class="col-data">Payload Data Bytes</span>
+            <span class="col-ascii">ASCII</span>
+          </div>
+
+          <!-- Trace Table Body -->
+          <div class="trace-scroll-area" id="trace-scroll-area">
+            <div id="trace-table-body" class="trace-table-body">
+              <div class="trace-empty-message" id="trace-empty-message">
+                Ready to capture CAN bus traffic. Select an interface and click <strong>"Connect Bus"</strong>.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right: Transmit Studio & Signal Decoding Panel -->
+      <aside class="studio-sidebar">
+        <div class="studio-card glass-card">
+          <!-- Studio Tabs Header -->
+          <div class="studio-tabs-header">
+            <button class="studio-tab active" data-tab="transmit">Transmit</button>
+            <button class="studio-tab" data-tab="signals">DBC Signals</button>
+            <button class="studio-tab" data-tab="bridge">Vector Setup</button>
+          </div>
+
+          <!-- TAB 1: Transmit / Frame Injector -->
+          <div class="tab-pane active" id="pane-transmit">
+            <div class="injector-header">
+              <h4>Frame Injector</h4>
+              <span class="badge">TX Engine</span>
+            </div>
+
+            <form id="tx-form" class="tx-form">
+              <div class="form-row-2">
+                <div class="tx-input-group">
+                  <label for="tx-can-id">CAN ID (Hex):</label>
+                  <input type="text" id="tx-can-id" placeholder="0x100" value="0x100" required>
+                </div>
+                <div class="tx-input-group">
+                  <label for="tx-id-type">ID Format:</label>
+                  <select id="tx-id-type" class="can-select-sm">
+                    <option value="std" selected>Standard (11-bit)</option>
+                    <option value="ext">Extended (29-bit)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-row-2">
+                <div class="tx-input-group">
+                  <label for="tx-dlc">DLC (Length):</label>
+                  <select id="tx-dlc" class="can-select-sm">
+                    <option value="1">1 Byte</option>
+                    <option value="2">2 Bytes</option>
+                    <option value="4">4 Bytes</option>
+                    <option value="8" selected>8 Bytes</option>
+                    <option value="64">64 Bytes (CAN-FD)</option>
+                  </select>
+                </div>
+                <div class="tx-input-group">
+                  <label for="tx-channel">Channel:</label>
+                  <select id="tx-channel" class="can-select-sm">
+                    <option value="1" selected>Channel 1</option>
+                    <option value="2">Channel 2</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="tx-input-group">
+                <label for="tx-payload">Data Bytes (Hex):</label>
+                <input type="text" id="tx-payload" placeholder="00 11 22 33 44 55 66 77" value="11 22 33 44 55 66 77 88" class="font-mono" required>
+              </div>
+
+              <!-- Cycle / Periodic Transmission -->
+              <div class="cycle-scheduler-box">
+                <label class="cycle-toggle-label">
+                  <input type="checkbox" id="tx-cycle-enable">
+                  <span>Periodic Transmission</span>
+                </label>
+                <div class="cycle-interval-wrap">
+                  <input type="number" id="tx-cycle-ms" value="100" min="10" max="10000" step="10">
+                  <span class="unit">ms</span>
+                </div>
+              </div>
+
+              <div class="tx-buttons-row">
+                <button type="submit" id="tx-send-btn" class="btn btn-primary btn-sm">
+                  ⚡ Transmit Frame
+                </button>
+                <button type="button" id="tx-stop-cycle-btn" class="btn btn-secondary btn-sm" style="display: none;">
+                  Stop Cycle
+                </button>
+              </div>
+            </form>
+
+            <!-- Quick Automotive Message Presets -->
+            <div class="presets-box">
+              <h5>Quick Automotive Presets</h5>
+              <div class="presets-grid">
+                <button class="preset-btn" data-id="0x100" data-dlc="8" data-bytes="0D 48 32 00 12 00 00 00" title="Engine Speed: 3400 RPM">Engine RPM (0x100)</button>
+                <button class="preset-btn" data-id="0x200" data-dlc="8" data-bytes="18 42 03 80 00 00 00 00" title="Vehicle Speed: 62.5 km/h">Vehicle Speed (0x200)</button>
+                <button class="preset-btn" data-id="0x7DF" data-dlc="8" data-bytes="02 01 0C 00 00 00 00 00" title="OBD-II Engine RPM Request">OBD-II Req (0x7DF)</button>
+                <button class="preset-btn" data-id="0x350" data-dlc="8" data-bytes="64 00 1E 28 00 00 00 00" title="Battery SOC: 88%">Battery SOC (0x350)</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 2: DBC Live Signal Decoder -->
+          <div class="tab-pane" id="pane-signals">
+            <div class="signals-header">
+              <h4>DBC Telemetry Decoder</h4>
+              <span class="badge">Live Physical Signals</span>
+            </div>
+            <p class="signals-desc">
+              Decodes raw payload bits into calibrated automotive engineering units in real time.
+            </p>
+
+            <div class="signals-telemetry-grid">
+              <div class="signal-gauge-card">
+                <span class="sig-title">Engine Speed</span>
+                <span class="sig-val" id="sig-rpm">0</span>
+                <span class="sig-unit">RPM</span>
+                <div class="sig-bar-wrap"><div class="sig-bar" id="bar-rpm" style="width: 0%;"></div></div>
+              </div>
+
+              <div class="signal-gauge-card">
+                <span class="sig-title">Vehicle Speed</span>
+                <span class="sig-val" id="sig-speed">0.0</span>
+                <span class="sig-unit">km/h</span>
+                <div class="sig-bar-wrap"><div class="sig-bar speed" id="bar-speed" style="width: 0%;"></div></div>
+              </div>
+
+              <div class="signal-gauge-card">
+                <span class="sig-title">Coolant Temperature</span>
+                <span class="sig-val" id="sig-temp">--</span>
+                <span class="sig-unit">&deg;C</span>
+              </div>
+
+              <div class="signal-gauge-card">
+                <span class="sig-title">Battery State of Charge</span>
+                <span class="sig-val" id="sig-soc">--</span>
+                <span class="sig-unit">%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 3: Vector Bridge Guide & Download -->
+          <div class="tab-pane" id="pane-bridge">
+            <div class="bridge-header">
+              <h4>TFS Vector Bridge</h4>
+              <span class="badge">vxlapi Integration</span>
+            </div>
+            <p class="bridge-desc">
+              Connect Vector Informatik hardware (VN1610, VN1630, VN1640, CANcaseXL) by running our lightweight bridge daemon on your PC.
+            </p>
+
+            <div class="bridge-download-box">
+              <h5>1. Get the Bridge</h5>
+              <div class="bridge-actions">
+                <a href="bridge/vector_bridge.py" download="vector_bridge.py" class="btn btn-primary btn-sm">
+                  📥 Download vector_bridge.py
+                </a>
+                <a href="bridge/start_vector_bridge.bat" download="start_vector_bridge.bat" class="btn btn-secondary btn-sm">
+                  ⚡ Download start_bridge.bat
+                </a>
+              </div>
+            </div>
+
+            <div class="bridge-steps-box">
+              <h5>2. Quick Start (Windows)</h5>
+              <ol class="bridge-steps-list">
+                <li>Make sure Vector Drivers are installed (from Vector Driver Setup / CANoe / CANalyzer).</li>
+                <li>Install prerequisites via command prompt:
+                  <code>pip install python-can websockets</code>
+                </li>
+                <li>Double-click <code>start_vector_bridge.bat</code> (or run <code>python vector_bridge.py</code>).</li>
+                <li>Click <strong>"Connect Bus"</strong> in the top toolbar.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <!-- Vector Bridge Modal Popup -->
+    <div id="bridge-modal" class="modal">
+      <div class="modal-backdrop"></div>
+      <div class="modal-content glass-card">
+        <div class="modal-header">
+          <h3>TFS Vector Hardware Bridge</h3>
+          <button class="close-btn" id="close-bridge-modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>The Vector Bridge links the browser directly to <code>vxlapi64.dll</code> over a local secure WebSocket (<code>ws://localhost:9002</code>).</p>
+          <div style="margin: 20px 0; display: flex; gap: 10px;">
+            <a href="bridge/vector_bridge.py" download="vector_bridge.py" class="btn btn-primary" style="flex: 1;">Download Python Script</a>
+            <a href="bridge/start_vector_bridge.bat" download="start_vector_bridge.bat" class="btn btn-secondary" style="flex: 1;">Download 1-Click .bat</a>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">Compatible with Vector VN1610, VN1630, VN1640, VN5610, VN7600, and CANcaseXL.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../common_js/navbar.js"></script>
+  <script src="../common_js/auth.js"></script>
+  <script src="can_analyzer.js"></script>
+</body>
+</html>

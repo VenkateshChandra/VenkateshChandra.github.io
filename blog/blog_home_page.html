@@ -1,83 +1,127 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
-  <title>TFS Home</title>
+  <title>Engineering Blog &amp; Hardware Guides | Trends For Sale (TFS)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="blog_home_page.css">
-  <link rel="stylesheet" href="blog_home_page_mobile.css">
+  <meta name="description" content="In-depth tutorials, technical specifications, and hardware guides for Web Serial UART, Vector CAN bus protocol analysis, embedded display C-arrays, and precision math.">
+
+  <!-- Design System & Navbar Styles -->
+  <link rel="stylesheet" href="../common_css/design_system.css?v=2.0">
+  <link rel="stylesheet" href="../common_css/navbar.css?v=2.0">
+  <link rel="stylesheet" href="blog_home_page.css?v=2.0">
 </head>
 <body>
-  <div class="main-wrapper">
-    <header class="site-header">
-      <div class="site-branding">
-        <h1 class="site-title">Trends For Sale</h1>
-        <h4 class="site-description">...Beyond The Trends, Into Your Hands</h4>
-      </div>
-      <nav class="main-navigation">
-        <button class="hamburger" id="hamburger-btn" aria-label="Open menu">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-        <ul class="nav-menu">
-          <li><a href="../home/home_page.html" >Home</a></li>
-          <li><a href="../about/about_page.html">About</a></li>
-          <li><a href="../contact/contact_home_page.html">Contact</a></li>
-          <li class="dropdown">
-            <a href="#" class="dropbtn">Tools</a>
-            <ul class="dropdown-content">
-              <li><a href="../serial_term/serial_term.html">Serial Terminal</a></li>
-              <li><a href="../common_pages/coming_soon.html">CAN Analysis Tool</a></li>
-            </ul>
-          </li>
-          <li><a href="../blog/blog_home_page.html" class="active">Blog</a></li>
-          <li><a href="../common_pages/coming_soon.html">Shop</a></li>
-        </ul>
-      </nav>
-      <nav class="mobile-nav" id="mobile-nav">
-        <button class="close-mobile-nav" id="close-mobile-nav" aria-label="Close menu">&times;</button>
-        <ul>
-          <li><a href="../home/home_page.html">Home</a></li>
-          <li><a href="../about/about_page.html">About</a></li>
-          <li><a href="../common_pages/coming_soon.html">Contact</a></li>
-          <li><a href="../serial_term/serial_term.html">Serial Terminal</a></li>
-          <li><a href="../common_pages/coming_soon.html">CAN Analysis Tool</a></li>
-          <li><a href="../blog/blog_home_page.html">Blog</a></li>
-          <li><a href="../common_pages/coming_soon.html">Shop</a></li>
-        </ul>
-      </nav>
-    </header>
-    <main class="site-content">
-      <section class="featured-post">
-        <div class="featured-content">
-          <h1 class="entry-title">Welcome to TFS Blog</h1>
-          <div class="entry-meta">
+  <div class="site-wrapper">
+    <!-- Common Global Header & Mobile Drawer Mount Point -->
+    <div id="tfs-navbar" data-active="blog"></div>
+
+    <!-- Main Content -->
+    <main class="blog-main">
+      <!-- Hero -->
+      <section class="blog-hero">
+        <div class="blog-hero-container">
+          <div class="badge-row">
+            <span class="badge badge-pulse">Engineering Knowledge Base</span>
+            <span class="badge">Hardware Specs &bull; Protocols &bull; Tutorials</span>
           </div>
-          <div class="entry-body">
-            <p>
-              Stay ahead with trending tech news, DIY projects, and exclusive deals on electronics & software.
-            </p>
+          <h1 class="blog-title">Technical <span class="gradient-text">Blog &amp; Guides</span></h1>
+          <p class="blog-subtitle">
+            In-depth architectural breakdowns, hardware connection guides, and specifications for browser-based embedded engineering tools.
+          </p>
+
+          <!-- Search & Filter Box -->
+          <div class="blog-search-box">
+            <div class="search-input-wrap">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              </svg>
+              <input type="text" id="blog-search" placeholder="Search guides by keyword (e.g., 'can bus', 'web serial', 'rgb565', 'kmpl', 'pdf')..." autocomplete="off">
+              <button id="clear-search-btn" class="clear-search-btn" title="Clear search" style="display: none; background: transparent; border: none; color: var(--text-muted); cursor: pointer; position: absolute; right: 16px; font-size: 1.2rem;">&times;</button>
+            </div>
+
+            <div class="filter-pills" id="blog-filter-pills">
+              <button class="filter-pill active" data-cat="all">All Articles</button>
+              <button class="filter-pill" data-cat="automotive">🚗 Automotive &amp; CAN</button>
+              <button class="filter-pill" data-cat="hardware">⚡ Hardware &amp; Serial</button>
+              <button class="filter-pill" data-cat="embedded">💻 Embedded Displays</button>
+              <button class="filter-pill" data-cat="math">📐 Automotive Math</button>
+              <button class="filter-pill" data-cat="documents">📄 Document Security</button>
+            </div>
           </div>
         </div>
       </section>
-      <aside class="sidebar">
-        <div class="widget">
-          <h3 class="widget-title">Quick Links</h3>
-          <ul>
-            <li><a href="serial_term/serial_term.html">Serial Terminal</a></li>
-            <li><a href="#">Documentation</a></li>
-            <li><a href="#">Support</a></li>
-          </ul>
+
+      <!-- Content Section -->
+      <section class="blog-content-section">
+        <div class="section-container">
+          <!-- Featured Article Container -->
+          <div id="featured-article-container"></div>
+
+          <!-- All Articles Grid Heading -->
+          <h2 class="article-grid-heading">Engineering Articles &amp; Walkthroughs</h2>
+
+          <!-- Article Grid -->
+          <div class="article-grid" id="article-grid"></div>
+
+          <!-- Empty State -->
+          <div id="no-articles-found" class="no-articles-found" style="display: none;">
+            <div style="font-size: 2.5rem; margin-bottom: 12px;">🔍</div>
+            <h3>No matching guides found</h3>
+            <p style="color: var(--text-muted); font-size: 0.92rem;">Try searching for a different keyword like "serial", "can", "c-array", or "fuel".</p>
+          </div>
         </div>
-      </aside>
+      </section>
     </main>
-    <footer class="site-footer">
-      <div class="footer-content">
-        &copy; 2025 TFS &mdash; All rights reserved.
+
+    <!-- Slide-in / Modal Article Reader -->
+    <div id="reader-modal" class="reader-modal">
+      <div class="reader-container">
+        <button id="reader-close-btn" class="reader-close-btn" title="Close Article">&times;</button>
+
+        <header class="reader-header">
+          <div class="reader-badge-row">
+            <span class="badge badge-accent" id="reader-badge">Automotive &amp; Protocols</span>
+            <span class="badge" id="reader-read-time">8 min read</span>
+          </div>
+          <h1 class="reader-title" id="reader-title">Article Title</h1>
+          <div class="reader-author-row">
+            <div class="author-chip">
+              <div class="author-avatar">VC</div>
+              <div class="author-info">
+                <span class="author-name" id="reader-author-name">Venkatesh Chandra</span>
+                <span class="post-date" id="reader-author-role">Senior Embedded Software Engineer</span>
+              </div>
+            </div>
+            <span class="text-muted" style="font-size: 0.85rem;" id="reader-date">October 24, 2026</span>
+          </div>
+        </header>
+
+        <!-- Article Content Body -->
+        <article class="reader-body" id="reader-body"></article>
+
+        <!-- Tool Callout CTA -->
+        <div class="reader-tool-cta">
+          <div>
+            <h4>Experience This Tool Live</h4>
+            <p>Connect your hardware or run client-side simulations right inside your browser.</p>
+          </div>
+          <a id="reader-tool-link" href="#" class="btn btn-primary">
+            <span id="reader-tool-name">Launch Tool &rarr;</span>
+          </a>
+        </div>
       </div>
-    </footer>
+    </div>
+
+    <!-- Common Global Site Footer Mount Point -->
+    <div id="tfs-footer"></div>
   </div>
+
+  <!-- Scripts -->
+  <script src="blog_posts_data.js"></script>
+  <script src="../common_js/navbar.js"></script>
+  <script src="../common_js/auth.js"></script>
   <script src="blog_home_page.js"></script>
 </body>
 </html>

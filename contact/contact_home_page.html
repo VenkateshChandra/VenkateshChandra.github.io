@@ -1,89 +1,145 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
-  <title>TFS Home</title>
+  <title>Contact &amp; Feedback | Trends For Sale (TFS)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="contact_home_page.css">
-  <link rel="stylesheet" href="contact_home_page_mobile.css">
+  <meta name="description" content="Get in touch with Trends For Sale (TFS). Report bugs, request hardware protocols or new converters, and collaborate on embedded engineering tooling.">
+
+  <!-- Design System & Navbar Styles -->
+  <link rel="stylesheet" href="../common_css/design_system.css?v=2.0">
+  <link rel="stylesheet" href="../common_css/navbar.css?v=2.0">
+  <link rel="stylesheet" href="contact_home_page.css?v=2.0">
 </head>
 <body>
-  <div class="main-wrapper">
-    <header class="site-header">
-      <div class="site-branding">
-        <h1 class="site-title">Trends For Sale</h1>
-        <h4 class="site-description">...Beyond The Trends, Into Your Hands</h4>
-      </div>
-      <nav class="main-navigation">
-        <button class="hamburger" id="hamburger-btn" aria-label="Open menu">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-        <ul class="nav-menu">
-          <li><a href="../home/home_page.html" >Home</a></li>
-          <li><a href="../about/about_page.html">About</a></li>
-          <li><a href="../contact/contact_home_page.html"  class="active">Contact</a></li>
-          <li class="dropdown">
-            <a href="#" class="dropbtn">Tools</a>
-            <ul class="dropdown-content">
-              <li><a href="../serial_term/serial_term.html">Serial Terminal</a></li>
-              <li><a href="../common_pages/coming_soon.html">CAN Analysis Tool</a></li>
-            </ul>
-          </li>
-          <li><a href="../blog/blog_home_page.html">Blog</a></li>
-          <li><a href="../common_pages/coming_soon.html">Shop</a></li>
-        </ul>
-      </nav>
-      <nav class="mobile-nav" id="mobile-nav">
-        <button class="close-mobile-nav" id="close-mobile-nav" aria-label="Close menu">&times;</button>
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="../common_pages/coming_soon.html">About</a></li>
-          <li><a href="../common_pages/coming_soon.html">Contact</a></li>
-          <li><a href="../serial_term/serial_term.html">Serial Terminal</a></li>
-          <li><a href="../common_pages/coming_soon.html">CAN Analysis Tool</a></li>
-          <li><a href="../common_pages/coming_soon.html">Blog</a></li>
-          <li><a href="../common_pages/coming_soon.html">Shop</a></li>
-        </ul>
-      </nav>
-    </header>
-    <main class="site-content">
-      <section class="featured-post">
-        <div class="featured-content">
-          <h1 class="entry-title">Welcome to TFS Blog</h1>
-          <div class="entry-meta">
+  <div class="site-wrapper">
+    <!-- Common Global Header & Mobile Drawer Mount Point -->
+    <div id="tfs-navbar" data-active="contact"></div>
+
+    <!-- Main Content -->
+    <main class="contact-main">
+      <!-- Hero -->
+      <section class="contact-hero">
+        <div class="contact-hero-container">
+          <div class="badge-row">
+            <span class="badge badge-pulse">Direct Line</span>
+            <span class="badge">Hardware Support &bull; Protocol Requests</span>
           </div>
-          <div class="entry-body">
-            <p>
-              Stay ahead with trending tech news, DIY projects, and exclusive deals on electronics & software.
-            </p>
+          <h1 class="contact-title">Get in Touch with <span class="gradient-text">TFS Engineering</span></h1>
+          <p class="contact-subtitle">
+            Have a question about Vector CAN hardware integration, a custom protocol analyzer request, or a bug report? We would love to hear from you.
+          </p>
+        </div>
+      </section>
+
+      <!-- Contact Grid -->
+      <section class="contact-section">
+        <div class="section-container">
+          <div class="contact-grid">
+            <!-- Form Column -->
+            <div class="glass-card form-card">
+              <h2 class="form-title">Send Us a Direct Message</h2>
+              <p class="form-sub">Fill out the form below and our engineering team will respond directly.</p>
+
+              <form id="contact-form" onsubmit="event.preventDefault(); document.getElementById('contact-success-msg').style.display = 'block'; document.getElementById('contact-form').reset();">
+                <div class="form-row">
+                  <label for="contact-name">Your Full Name:</label>
+                  <input type="text" id="contact-name" class="form-input" placeholder="e.g. Alex Mercer" required>
+                </div>
+
+                <div class="form-row">
+                  <label for="contact-email">Email Address:</label>
+                  <input type="email" id="contact-email" class="form-input" placeholder="e.g. alex@engineering.com" required>
+                </div>
+
+                <div class="form-row">
+                  <label for="contact-topic">Inquiry Topic:</label>
+                  <select id="contact-topic" class="form-input conv-select">
+                    <option value="hardware">Hardware Protocol / Vector CAN Support</option>
+                    <option value="converter">New Unit Converter Request</option>
+                    <option value="bug">Bug Report / Hardware Compatibility</option>
+                    <option value="collab">Engineering Collaboration / General</option>
+                  </select>
+                </div>
+
+                <div class="form-row">
+                  <label for="contact-message">Message / Details:</label>
+                  <textarea id="contact-message" class="form-input" placeholder="Provide hardware details (e.g., STM32 board, Vector VN1610, baud rate) or your feature request..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                  Send Message &rarr;
+                </button>
+              </form>
+
+              <!-- Success Alert -->
+              <div id="contact-success-msg" style="display: none; margin-top: 18px; padding: 14px 18px; background: rgba(16, 185, 129, 0.12); border: 1px solid var(--accent-emerald); border-radius: var(--radius-md); color: var(--accent-emerald); font-size: 0.92rem;">
+                ✓ <strong>Message Received!</strong> Thank you for reaching out. We will get back to your email shortly.
+              </div>
+            </div>
+
+            <!-- Channels Column -->
+            <div class="channels-col">
+              <!-- Lead Developer -->
+              <div class="glass-card channel-card">
+                <div class="channel-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                  </svg>
+                </div>
+                <div class="channel-info">
+                  <h4>Venkatesh Chandra</h4>
+                  <p>Lead Developer &amp; Senior Embedded Software Engineer. Direct architectural inquiries &amp; protocol tooling.</p>
+                  <a href="https://www.linkedin.com/in/venkateshchandra-a-/" target="_blank" rel="noopener noreferrer" class="channel-link">
+                    Connect on LinkedIn &rarr;
+                  </a>
+                </div>
+              </div>
+
+              <!-- QA Lead -->
+              <div class="glass-card channel-card">
+                <div class="channel-icon" style="background: rgba(168, 85, 247, 0.12); color: var(--accent-purple);">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                  </svg>
+                </div>
+                <div class="channel-info">
+                  <h4>Mani Kumari Amburu</h4>
+                  <p>Lead Test Engineer &amp; QA. Protocol validation, test bench verification &amp; cross-platform QA.</p>
+                  <a href="https://www.linkedin.com/in/mani-kumari-amburu-63434b19a/" target="_blank" rel="noopener noreferrer" class="channel-link">
+                    Connect on LinkedIn &rarr;
+                  </a>
+                </div>
+              </div>
+
+              <!-- GitHub & Community -->
+              <div class="glass-card channel-card">
+                <div class="channel-icon" style="background: rgba(16, 185, 129, 0.12); color: var(--accent-emerald);">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="16 18 22 12 16 6"/>
+                    <polyline points="8 6 2 12 8 18"/>
+                  </svg>
+                </div>
+                <div class="channel-info">
+                  <h4>Open Source &amp; Repo</h4>
+                  <p>Contribute bug reports, feature suggestions, or pull requests directly on our repository.</p>
+                  <a href="https://github.com/VenkateshChandra/VenkateshChandra.github.io" target="_blank" rel="noopener noreferrer" class="channel-link">
+                    View GitHub Repository &rarr;
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
-      <aside class="sidebar">
-        <div class="widget">
-          <h3 class="widget-title">Quick Links</h3>
-          <ul>
-            <li><a href="../serial_term/serial_term.html">Serial Terminal</a></li>
-            <li><a href="#">Documentation</a></li>
-            <li><a href="#">Support</a></li>
-          </ul>
-        </div>
-        <div class="widget">
-          <h3 class="widget-title">About</h3>
-          <p>
-            TFS is a collection of utilities designed for productivity and hardware interfacing. Enjoy a clean and modern experience!
-          </p>
-        </div>
-      </aside>
     </main>
-    <footer class="site-footer">
-      <div class="footer-content">
-        &copy; 2025 TFS &mdash; All rights reserved.
-      </div>
-    </footer>
+
+    <!-- Common Global Site Footer Mount Point -->
+    <div id="tfs-footer"></div>
   </div>
-  <script src="contact_home_page.js"></script>
+
+  <script src="../common_js/navbar.js"></script>
+  <script src="../common_js/auth.js"></script>
 </body>
 </html>

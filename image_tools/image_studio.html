@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <title>Image &amp; Embedded Asset Studio | Trends For Sale (TFS)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="100% In-browser image converter and embedded C-array generator. Convert PNG/JPG/WebP or generate OLED monochrome &amp; RGB565 C byte arrays for STM32/ESP32.">
+
+  <!-- Design System & Navbar Styles -->
+  <link rel="stylesheet" href="../common_css/design_system.css?v=2.0">
+  <link rel="stylesheet" href="../common_css/navbar.css?v=2.0">
+  <link rel="stylesheet" href="image_studio.css?v=2.0">
+</head>
+<body>
+  <div class="site-wrapper">
+    <!-- Common Global Header & Mobile Drawer Mount Point -->
+    <div id="tfs-navbar" data-active="tools"></div>
+
+    <!-- Main Content -->
+    <main class="img-main">
+      <!-- Hero -->
+      <section class="img-hero">
+        <div class="img-hero-container">
+          <div class="badge-row">
+            <span class="badge badge-pulse">100% Client-Side</span>
+            <span class="badge">MCU Asset Generator &bull; Zero Server Uploads</span>
+          </div>
+          <h1 class="img-title">Image &amp; Embedded <span class="gradient-text">Asset Studio</span></h1>
+          <p class="img-subtitle">
+            Client-side image transcoder and microcontroller display asset generator. Convert formats with zero quality loss or generate C header byte arrays for OLEDs and TFT screens.
+          </p>
+
+          <!-- Tabs -->
+          <div class="img-tabs-bar" id="img-tabs-bar">
+            <button class="img-tab active" data-tab="transcode">🖼️ Format Converter &amp; Resizer</button>
+            <button class="img-tab" data-tab="embedded">⚡ Embedded C-Array Generator</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Content -->
+      <section class="img-content-section">
+        <div class="section-container">
+          
+          <!-- TAB 1: Format Transcoder -->
+          <div class="img-pane active" id="pane-transcode">
+            <div class="glass-card">
+              <div class="card-head">
+                <div>
+                  <h3>Universal Image Transcoder &amp; Compressor</h3>
+                  <p>Convert and compress images locally in RAM across WebP, PNG, and JPEG formats.</p>
+                </div>
+              </div>
+
+              <!-- Dropzone -->
+              <div class="dropzone-box" id="trans-dropzone">
+                <div class="dropzone-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                    <circle cx="8.5" cy="8.5" r="1.5"/>
+                    <polyline points="21 15 16 10 5 21"/>
+                  </svg>
+                </div>
+                <div class="dropzone-title">Click to browse or drag &amp; drop an image here</div>
+                <div class="dropzone-desc">Supports PNG, JPG, WebP, SVG, BMP, and GIF</div>
+                <input type="file" id="trans-file-input" class="file-input-hidden" accept="image/*">
+              </div>
+
+              <!-- Studio Controls & Preview (Hidden until image loaded) -->
+              <div id="trans-studio-wrap" class="studio-grid" style="display: none;">
+                <div class="preview-col">
+                  <div class="preview-box checkerboard-bg">
+                    <img id="trans-preview-img" alt="Transcoded Preview">
+                  </div>
+                  <div class="preview-meta">
+                    <span id="trans-orig-meta">Original: -</span>
+                    <span id="trans-new-meta">New: -</span>
+                  </div>
+                </div>
+
+                <div class="settings-col">
+                  <div class="controls-card">
+                    <div class="setting-row">
+                      <label for="trans-format">Target Format:</label>
+                      <select id="trans-format" class="conv-select">
+                        <option value="image/webp" selected>WebP (High-Efficiency Web)</option>
+                        <option value="image/png">PNG (Lossless &amp; Transparent)</option>
+                        <option value="image/jpeg">JPEG (Compressed Photo)</option>
+                      </select>
+                    </div>
+
+                    <div class="setting-row">
+                      <label>
+                        Dimensions (Width &times; Height):
+                        <span>
+                          <input type="checkbox" id="trans-lock-ratio" checked> Lock Ratio
+                        </span>
+                      </label>
+                      <div class="dimension-inputs">
+                        <input type="number" id="trans-width" class="conv-input font-mono" min="1">
+                        <span class="dim-divider">&times;</span>
+                        <input type="number" id="trans-height" class="conv-input font-mono" min="1">
+                      </div>
+                    </div>
+
+                    <div class="setting-row">
+                      <label for="trans-quality">
+                        Compression Quality:
+                        <span id="trans-quality-val" class="font-mono">85%</span>
+                      </label>
+                      <input type="range" id="trans-quality" min="10" max="100" value="85" style="width: 100%;">
+                    </div>
+
+                    <button id="trans-download-btn" class="btn btn-primary" style="margin-top: 10px;">
+                      Download Transcoded Image &rarr;
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 2: Embedded C-Array Generator -->
+          <div class="img-pane" id="pane-embedded">
+            <div class="glass-card">
+              <div class="card-head">
+                <div>
+                  <h3>Embedded Display C-Array &amp; Bitmap Studio</h3>
+                  <p>Convert graphics into C/C++ byte arrays for STM32, ESP32, and Arduino display drivers.</p>
+                </div>
+              </div>
+
+              <!-- Dropzone -->
+              <div class="dropzone-box" id="embed-dropzone">
+                <div class="dropzone-icon" style="background: rgba(16, 185, 129, 0.12); color: var(--accent-emerald);">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="16 18 22 12 16 6"/>
+                    <polyline points="8 6 2 12 8 18"/>
+                  </svg>
+                </div>
+                <div class="dropzone-title">Click to browse or drop an icon/image to convert to C code</div>
+                <div class="dropzone-desc">Generates C header files for OLED, e-Paper, and TFT LCD displays</div>
+                <input type="file" id="embed-file-input" class="file-input-hidden" accept="image/*">
+              </div>
+
+              <!-- Embedded Studio (Hidden until loaded) -->
+              <div id="embed-studio-wrap" class="studio-grid" style="display: none;">
+                <div class="preview-col">
+                  <div class="preview-box">
+                    <canvas id="embed-preview-canvas"></canvas>
+                  </div>
+
+                  <!-- Quick Hardware Display Presets -->
+                  <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700; width: 100%;">Hardware Presets:</span>
+                    <button class="action-btn-sm embed-preset-btn" data-w="128" data-h="64" data-mode="mono1">128x64 OLED</button>
+                    <button class="action-btn-sm embed-preset-btn" data-w="128" data-h="32" data-mode="mono1">128x32 OLED</button>
+                    <button class="action-btn-sm embed-preset-btn" data-w="240" data-h="240" data-mode="rgb565">240x240 TFT (ST7789)</button>
+                    <button class="action-btn-sm embed-preset-btn" data-w="320" data-h="240" data-mode="rgb565">320x240 TFT (ILI9341)</button>
+                  </div>
+                </div>
+
+                <div class="settings-col">
+                  <div class="controls-card">
+                    <div class="setting-row">
+                      <label for="embed-mode">Display Target Format:</label>
+                      <select id="embed-mode" class="conv-select">
+                        <option value="mono1" selected>1-Bit Monochrome (SSD1306, e-Paper, Adafruit GFX)</option>
+                        <option value="rgb565">16-Bit RGB565 (ST7789, ILI9341 TFT_eSPI)</option>
+                        <option value="gray8">8-Bit Grayscale (Thermal / E-Ink)</option>
+                      </select>
+                    </div>
+
+                    <div class="setting-row">
+                      <label>Target Dimensions (Pixels):</label>
+                      <div class="dimension-inputs">
+                        <input type="number" id="embed-width" class="conv-input font-mono" value="128">
+                        <span class="dim-divider">&times;</span>
+                        <input type="number" id="embed-height" class="conv-input font-mono" value="64">
+                      </div>
+                    </div>
+
+                    <div class="setting-row" id="embed-threshold-row">
+                      <label for="embed-threshold">
+                        Monochrome Black/White Threshold:
+                        <span id="embed-threshold-val" class="font-mono">128</span>
+                      </label>
+                      <input type="range" id="embed-threshold" min="1" max="254" value="128" style="width: 100%;">
+                    </div>
+
+                    <div class="setting-row" id="embed-byteswap-row" style="display: none;">
+                      <label style="cursor: pointer;">
+                        <input type="checkbox" id="embed-byteswap"> Swap RGB565 Bytes (Little/Big Endian)
+                      </label>
+                    </div>
+
+                    <div class="setting-row">
+                      <label style="cursor: pointer;">
+                        <input type="checkbox" id="embed-invert"> Invert Image Colors
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Code Box -->
+              <div class="code-preview-wrap" id="embed-code-wrap" style="display: none;">
+                <div class="code-head">
+                  <span class="code-title">Embedded C Header Snippet (.h)</span>
+                  <div style="display: flex; gap: 8px;">
+                    <button id="embed-copy-btn" class="btn btn-secondary btn-sm">Copy C Array</button>
+                    <button id="embed-download-h-btn" class="btn btn-primary btn-sm">Download .h File</button>
+                  </div>
+                </div>
+                <pre class="code-box" id="embed-code-box">// Upload an image above to generate C-array header</pre>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </section>
+    </main>
+
+    <!-- Common Global Site Footer Mount Point -->
+    <div id="tfs-footer"></div>
+  </div>
+
+  <script src="../common_js/navbar.js"></script>
+  <script src="../common_js/auth.js"></script>
+  <script src="image_studio.js"></script>
+</body>
+</html>

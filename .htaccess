@@ -1,0 +1,40 @@
+# ===================================================================
+# TRENDS FOR SALE (TFS) - APACHE SECURITY & PERFORMANCE HARDENING
+# ===================================================================
+
+# 1. Disable Directory Index Browsing
+<IfModule mod_autoindex.c>
+    Options -Indexes
+</IfModule>
+
+# 2. Block Access to Hidden & Sensitive Files (.git, .env, .sql, .log)
+<FilesMatch "(^\.|\.(bak|config|sql|fla|psd|ini|log|sh|inc|swp|dist|env)$)">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# 3. HTTP Security Headers
+<IfModule mod_headers.c>
+    # Prevent Clickjacking by restricting framing to same origin
+    Header always set X-Frame-Options "SAMEORIGIN"
+    
+    # Prevent MIME type sniffing
+    Header always set X-Content-Type-Options "nosniff"
+    
+    # Enable legacy XSS filter in browsers
+    Header always set X-XSS-Protection "1; mode=block"
+    
+    # Referrer Policy
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    
+    # Disable sensitive browser hardware features
+    Header always set Permissions-Policy "geolocation=(), camera=(), microphone=()"
+</IfModule>
+
+# 4. UTF-8 Character Encoding Default
+AddDefaultCharset UTF-8
