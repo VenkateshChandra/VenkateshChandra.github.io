@@ -1,22 +1,61 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en" data-theme="dark">
 <head>
-    <title>Forgot login Page</title>
-    <link rel="stylesheet" type="text/css" href="..\common_css\style.css">
-    <link rel="stylesheet" type="text/css" href="..\common_css\header_footer.css">
+  <meta charset="UTF-8">
+  <title>Forgot Password | Trends For Sale (TFS)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../common_css/design_system.css">
+  <link rel="stylesheet" href="../common_css/navbar.css">
+  <style>
+    .auth-page-wrapper {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+      background: var(--bg-primary);
+      position: relative;
+    }
+    .auth-card {
+      max-width: 440px;
+      width: 100%;
+      text-align: center;
+      padding: 36px 32px;
+    }
+    .auth-icon-wrap {
+      width: 52px;
+      height: 52px;
+      border-radius: var(--radius-md);
+      background: rgba(0, 229, 255, 0.12);
+      color: var(--accent-cyan);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+    }
+    .auth-icon-wrap svg {
+      width: 26px;
+      height: 26px;
+    }
+  </style>
 </head>
-
-<body>
-    <div class="container">
-        <div class="logo">
-            <img src="..\common_artifacts\logo\test_blox_header_logo.png" alt="Test Blox Logo">
-        </div>
-        <h2>Forgot Login Support Page </h2>
-        <p>! WORK UNDER PROGRESS !</p>
-        <p><a href=".\index.html">Go Back</a></p>
+<body class="auth-page-wrapper">
+  <div class="glass-card auth-card">
+    <div class="auth-icon-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+      </svg>
     </div>
-    <script src="..\common_js\script.js"></script>
+    <span class="badge badge-pulse" style="margin-bottom: 16px;">Account Recovery</span>
+    <h2 style="margin-bottom: 10px;">Forgot Password</h2>
+    <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.5; margin-bottom: 24px;">
+      Automated password reset via email will be available in the next deployment. If you need immediate assistance with your test credentials, please contact support.
+    </p>
+    <a href="login.html" class="btn btn-primary" style="width: 100%;">
+      &larr; Back to Sign In
+    </a>
+  </div>
 </body>
-
 </html>

@@ -1,54 +1,200 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en" data-theme="dark">
 <head>
-  <title>Registration Page</title>
-  <link rel="stylesheet" type="text/css" href="..\common_css\style.css">
-  <link rel="stylesheet" type="text/css" href="..\common_css\header_footer.css">
+  <meta charset="UTF-8">
+  <title>Create Account | Trends For Sale (TFS)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Register for a Trends For Sale developer account to access advanced embedded tools and calculators.">
+
+  <!-- Design System & Navbar Styles -->
+  <link rel="stylesheet" href="../common_css/design_system.css">
+  <link rel="stylesheet" href="../common_css/navbar.css">
+  
+  <style>
+    .auth-page-wrapper {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 36px 20px;
+      position: relative;
+      overflow-x: hidden;
+      background: var(--bg-primary);
+    }
+    .auth-bg-glow {
+      position: absolute;
+      width: 700px;
+      height: 500px;
+      background: radial-gradient(circle, var(--accent-cyan-glow) 0%, rgba(99, 102, 241, 0.15) 50%, transparent 70%);
+      filter: blur(80px);
+      z-index: 0;
+      pointer-events: none;
+    }
+    .auth-card {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 480px;
+      padding: 36px 32px;
+    }
+    .auth-header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .auth-logo-badge {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-md);
+      background: var(--gradient-brand);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      box-shadow: 0 0 20px var(--accent-cyan-glow);
+    }
+    .auth-logo-badge svg {
+      width: 26px;
+      height: 26px;
+      fill: #ffffff;
+    }
+    .auth-title {
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+    .auth-subtitle {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .form-row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .auth-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .auth-group label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+    .auth-input {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-md);
+      padding: 9px 12px;
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      outline: none;
+      transition: all var(--transition-fast);
+    }
+    .auth-input:focus {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 10px var(--accent-cyan-glow);
+    }
+    .auth-alert {
+      display: none;
+      padding: 10px 14px;
+      border-radius: var(--radius-md);
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-bottom: 12px;
+    }
+    .auth-alert.error {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      color: #f87171;
+    }
+    .auth-alert.success {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      color: #34d399;
+    }
+    .auth-footer-text {
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 20px;
+    }
+    @media (max-width: 480px) {
+      .form-row-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
-
-<body>
-  <div class="container">
-    <div class="logo">
-      <img src="..\common_artifacts\logo\test_blox_header_logo.png" alt="Test Blox Logo">
+<body class="auth-page-wrapper">
+  <div class="auth-bg-glow"></div>
+  
+  <div class="glass-card auth-card">
+    <div class="auth-header">
+      <a href="../home/home_page.html" class="auth-logo-badge" title="TFS Home">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+        </svg>
+      </a>
+      <h2 class="auth-title">Create Account</h2>
+      <p class="auth-subtitle">Join the Trends For Sale engineering platform</p>
     </div>
-    <h2>Create an Account</h2>
-    <form id="registerForm" method="post" action="register.php">
-      <div class="form-row">
-        <div class="form-group">
-          <input type="text" name="firstName" placeholder="First Name" required>
+
+    <form id="registerForm" method="post" action="register.php" class="auth-form" autocomplete="on">
+      <!-- Hidden CSRF token field -->
+      <input type="hidden" name="csrf_token" value="">
+
+      <div class="form-row-2">
+        <div class="auth-group">
+          <label for="firstName">First Name</label>
+          <input type="text" id="firstName" name="firstName" class="auth-input" placeholder="First name" required>
         </div>
-        <div class="form-group">
-          <input type="text" name="lastName" placeholder="Last Name" required>
+        <div class="auth-group">
+          <label for="lastName">Last Name</label>
+          <input type="text" id="lastName" name="lastName" class="auth-input" placeholder="Last name" required>
         </div>
       </div>
-      <div class="form-group">
-        <input type="text" name="mobileNumber" placeholder="Mobile Number" required>
+
+      <div class="form-row-2">
+        <div class="auth-group">
+          <label for="mobileNumber">Phone / Mobile</label>
+          <input type="tel" id="mobileNumber" name="mobileNumber" class="auth-input" placeholder="+1234567890">
+        </div>
+        <div class="auth-group">
+          <label for="dateOfBirth">Date of Birth</label>
+          <input type="date" id="dateOfBirth" name="dateOfBirth" class="auth-input">
+        </div>
       </div>
-      <div class="form-group">
-        <input id="dob" type="date" name="dateOfBirth" required>
+
+      <div class="auth-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" class="auth-input" placeholder="Letters, numbers, underscores" required pattern="[a-zA-Z0-9_]{3,30}" title="3-30 alphanumeric characters and underscores only">
       </div>
-      <div class="form-group">
-        <input type="text" name="username" placeholder="Username" required>
+
+      <div class="auth-group">
+        <label for="password">Password (Min. 8 characters)</label>
+        <input type="password" id="password" name="password" class="auth-input" placeholder="••••••••" required minlength="8">
       </div>
-      <div class="form-group">
-        <input type="password" name="password" placeholder="Password" required>
-      </div>
-      <div class="form-group">
-        <input type="submit" value="Register">
-      </div>
+
+      <button type="submit" class="btn btn-primary btn-lg" style="width: 100%; margin-top: 6px;">
+        Register Account
+      </button>
     </form>
-    <p>Already have an account? <a href="..\login\index.html">Login</a></p>
 
+    <p class="auth-footer-text">
+      Already have an account? <a href="../login/login.html">Sign In here</a>
+    </p>
   </div>
-  <!-- Footer -->
-  <footer>
-    <div class="footer-content">
-      <!-- Add your footer content here -->
-      <p>&copy; 2025 My Web Page. All rights reserved.</p>
-    </div>
-  </footer>
-  <script src="..\common_js\script.js"></script>
-</body>
 
+  <!-- Scripts -->
+  <script src="../common_js/navbar.js"></script>
+  <script src="../common_js/auth.js"></script>
+</body>
 </html>

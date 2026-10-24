@@ -1,380 +1,557 @@
+/* ===================================================================
+   TRENDS FOR SALE (TFS) - PRO SERIAL TERMINAL WORKBENCH SCRIPT
+   =================================================================== */
+
+// Global State
+let port = null;
+let reader = null;
+let writer = null;
+let selectedPort = null;
+let autoScroll = true;
+let showTimestamps = true;
+let currentViewMode = 'ascii'; // 'ascii' | 'hex'
+
+let rxTotalBytes = 0;
+let txTotalBytes = 0;
+
+let dtrState = false;
+let rtsState = false;
+
+// Command History
+const commandHistory = [];
+let historyIndex = -1;
+
+// Serial Config
+let serialConfig = {
+  baudRate: 115200,
+  dataBits: 8,
+  stopBits: 1,
+  parity: 'none',
+  flowControl: 'none'
+};
+
+// DOM Elements
+const statusBadge = document.getElementById('status-badge');
+const statusDot = document.getElementById('status-dot');
+const statusText = document.getElementById('status-text');
+
+const portSelectBtn = document.getElementById('port-select-btn');
+const selectedPortLabel = document.getElementById('selected-port-label');
+const quickBaudrate = document.getElementById('quick-baudrate');
 const connectBtn = document.getElementById('connect-btn');
-const sendBtn = document.getElementById('send-btn');
-const inputBox = document.getElementById('input-box');
-const output = document.getElementById('output');
+const connectBtnText = document.getElementById('connect-btn-text');
+
+const consoleOutput = document.getElementById('output');
+const consoleScrollContainer = document.getElementById('console-scroll-container');
 const autoscrollBtn = document.getElementById('autoscroll-btn');
+const clearBtn = document.getElementById('clear-btn');
+const savelogBtn = document.getElementById('savelog-btn');
+const toggleTimestampsBtn = document.getElementById('toggle-timestamps-btn');
+
+const modeAsciiBtn = document.getElementById('mode-ascii-btn');
+const modeHexBtn = document.getElementById('mode-hex-btn');
+
+const rxBytesCounter = document.getElementById('rx-bytes-count');
+const txBytesCounter = document.getElementById('tx-bytes-count');
+
+const dtrBtn = document.getElementById('dtr-btn');
+const rtsBtn = document.getElementById('rts-btn');
+const espResetBtn = document.getElementById('esp-reset-btn');
+
+const inputBox = document.getElementById('input-box');
+const sendBtn = document.getElementById('send-btn');
+const lineEndingSelect = document.getElementById('line-ending');
+const sendFormatSelect = document.getElementById('send-format');
+const macroButtons = document.querySelectorAll('.quick-macro-btn');
+
 const configureBtn = document.getElementById('configure-btn');
 const configModal = document.getElementById('config-modal');
 const closeConfig = document.getElementById('close-config');
+const cancelConfigBtn = document.getElementById('cancel-config-btn');
 const configForm = document.getElementById('config-form');
-const outputElem = document.getElementById('output');
-const outputScrollContainer = document.querySelector('.output-console-content'); // Add this
 
-let textEncoder;
-let writableStreamClosed;
-let writer;
-let port = null;
-let availablePorts = [];
-let selectedPort = null;
-let autoScroll = true; // <-- Add this line
-let reader = null;
+const unsupportedBanner = document.getElementById('unsupported-banner');
 
-let serialConfig = {
-  baudRate: 9600,
-  parity: 'none',
-  portIndex: 0
-};
-
+// Helper: Formatted Timestamp [HH:MM:SS.mmm]
 function getTimestamp() {
   const now = new Date();
   const time = now.getHours().toString().padStart(2, '0') + ':' +
     now.getMinutes().toString().padStart(2, '0') + ':' +
     now.getSeconds().toString().padStart(2, '0');
   const ms = now.getMilliseconds().toString().padStart(3, '0');
-  const us = Math.floor(performance.now() % 1 * 1000).toString().padStart(3, '0');
-  return `${time}.${ms}${us}`;
+  return `${time}.${ms}`;
 }
 
-async function closePortIfOpen() {
-  if (port && port.readable) {
-    try {
-      if (reader) {
-        try {
-          await reader.cancel(); // Cancel any pending read
-        } catch (e) {}
-        if (reader) {
-          reader.releaseLock();
-          reader = null;
-        }
-      }
-      // Only now close the port
-      await port.close();
-      appendOutputLine(`[${getTimestamp()}] Serial port closed`);
-    } catch (e) {
-      console.log(`[${getTimestamp()}] Error closing port: ${e}`);
+// Check Web Serial API Support
+function checkSerialSupport() {
+  if (!('serial' in navigator)) {
+    if (unsupportedBanner) {
+      unsupportedBanner.style.display = 'block';
     }
+    appendOutputLine('Web Serial API is NOT supported in this browser. Please use Chrome, Edge, or Brave.', 'err');
+    return false;
   }
+  return true;
 }
 
-async function listSerialPorts() {
-  const portSelect = document.getElementById('port-number');
-  portSelect.innerHTML = '';
-  availablePorts = await navigator.serial.getPorts();
+// Append Line to Terminal Output
+function appendOutputLine(content, type = 'info', rawBytes = null) {
+  if (!consoleOutput) return;
 
-  if (availablePorts.length === 0) {
-    const opt = document.createElement('option');
-    opt.value = '';
-    opt.textContent = 'No ports found';
-    portSelect.appendChild(opt);
-    selectedPort = null;
-    return;
+  const lineDiv = document.createElement('div');
+  lineDiv.className = `output-line ${type}`;
+
+  if (showTimestamps) {
+    const timeSpan = document.createElement('span');
+    timeSpan.className = 'output-timestamp';
+    timeSpan.textContent = `[${getTimestamp()}]`;
+    lineDiv.appendChild(timeSpan);
   }
 
-  availablePorts.forEach((p, idx) => {
-    const info = p.getInfo();
-    let label = `Port ${idx + 1}`;
-    if (info.usbVendorId && info.usbProductId) {
-      label += ` (VID: ${info.usbVendorId.toString(16)}, PID: ${info.usbProductId.toString(16)})`;
-    }
-    const opt = document.createElement('option');
-    opt.value = idx;
-    opt.textContent = label;
-    portSelect.appendChild(opt);
-  });
+  const textSpan = document.createElement('span');
+  textSpan.className = 'output-text';
 
-  // Restore previous selection if possible
-  if (serialConfig.portIndex !== undefined && availablePorts[serialConfig.portIndex]) {
-    portSelect.value = serialConfig.portIndex;
-    selectedPort = availablePorts[serialConfig.portIndex];
+  if (currentViewMode === 'hex' && rawBytes) {
+    // Format raw bytes as hex
+    const hexArr = Array.from(rawBytes).map(b => b.toString(16).padStart(2, '0').toUpperCase());
+    textSpan.textContent = `[${type.toUpperCase()} HEX]: ` + hexArr.join(' ');
   } else {
-    portSelect.selectedIndex = 0;
-    selectedPort = availablePorts[0];
-    serialConfig.portIndex = 0;
+    textSpan.textContent = content;
   }
-}
 
-document.getElementById('port-number').addEventListener('change', function () {
-  const idx = parseInt(this.value, 10);
-  selectedPort = availablePorts[idx] || null;
-  serialConfig.portIndex = idx;
-});
+  lineDiv.appendChild(textSpan);
+  consoleOutput.appendChild(lineDiv);
 
-configureBtn.addEventListener('click', async () => {
-  await listSerialPorts();
-  configModal.style.display = 'block';
-  document.getElementById('baudrate').value = serialConfig.baudRate;
-  document.getElementById('parity').value = serialConfig.parity;
-  document.getElementById('port-number').value = serialConfig.portIndex;
-});
-
-closeConfig.addEventListener('click', () => {
-  configModal.style.display = 'none';
-});
-
-window.onclick = function (event) {
-  if (event.target == configModal) {
-    configModal.style.display = 'none';
-  }
-};
-
-const portSelectBtn = document.getElementById('port-select-btn');
-const selectedPortInfo = document.getElementById('selected-port-info');
-
-portSelectBtn.addEventListener('click', async () => {
-  try {
-    // Show the browser's serial port picker
-    const port = await navigator.serial.requestPort();
-    selectedPort = port;
-    const info = port.getInfo();
-    let label = '';
-    if (info.usbVendorId && info.usbProductId) {
-      label = `VID: ${info.usbVendorId.toString(16).toUpperCase()}, PID: ${info.usbProductId.toString(16).toUpperCase()}`;
-    } else {
-      label = 'Serial port selected';
-    }
-    selectedPortInfo.textContent = label;
-  } catch (err) {
-    selectedPortInfo.textContent = 'No port selected';
-    selectedPort = null;
-  }
-});
-
-configForm.addEventListener('submit', async function (e) {
-  e.preventDefault();
-  serialConfig.baudRate = parseInt(document.getElementById('baudrate').value, 10);
-  serialConfig.parity = document.getElementById('parity').value;
-  configModal.style.display = 'none';
-  await closePortIfOpen();
-  port = null;
-});
-
-connectBtn.addEventListener('click', async function () {
-  if (!selectedPort) {
-    alert('Please select a COM port in the Configure popup first.');
-    return;
-  }
-  if (!port) {
-    port = selectedPort;
-    try {
-      if (!port.readable && !port.writable) {
-        await port.open({
-          baudRate: serialConfig.baudRate,
-          parity: serialConfig.parity,
-          dataBits: 8,
-          stopBits: 1,
-          flowControl: 'none'
-        });
-      }
-      appendOutputLine(`[${getTimestamp()}] [Info]: Serial port connected!`);
-      textEncoder = new TextEncoderStream();
-      writableStreamClosed = textEncoder.readable.pipeTo(port.writable);
-      writer = textEncoder.writable.getWriter();
-      receive();
-      connectBtn.textContent = 'Disconnect';
-    } catch (error) {
-      appendOutputLine(`[${getTimestamp()}] Error: ${error}`);
-    }
-  } else {
-    await closePortIfOpen();
-    port = null;
-    connectBtn.textContent = 'Connect';
-  }
-});
-
-sendBtn.addEventListener('click', send);
-
-async function send() {
-  try {
-    const data = inputBox.value;
-    if (port && port.writable) {
-      await writer.write(data);
-      appendOutputLine(`[${getTimestamp()}] [TX]: ${data}`);
-    } else {
-      appendOutputLine(`[${getTimestamp()}] Error: Serial port is not open or writable`);
-    }
-  } catch (error) {
-    output.textContent += `[${getTimestamp()}] Error: ${error}\n`;
-  }
-}
-
-autoscrollBtn.addEventListener('click', function () {
-  autoScroll = !autoScroll;
-  autoscrollBtn.classList.toggle('active', autoScroll);
-  autoscrollBtn.classList.toggle('inactive', !autoScroll);
-  autoscrollBtn.textContent = autoScroll ? 'Manual Scroll' : 'Auto Scroll';
   if (autoScroll) {
     scrollOutputToBottom();
   }
-});
+}
 
-outputElem.addEventListener('scroll', function () {
-  if (autoScroll && (outputElem.scrollTop + outputElem.clientHeight < outputElem.scrollHeight - 5)) {
-    autoScroll = false;
-    autoscrollBtn.classList.remove('active');
-    autoscrollBtn.classList.add('inactive');
-    autoscrollBtn.textContent = 'Auto Scroll';
-  }
-});
-
-outputScrollContainer.addEventListener('scroll', function () {
-  if (
-    autoScroll &&
-    (outputScrollContainer.scrollTop + outputScrollContainer.clientHeight < outputScrollContainer.scrollHeight - 5)
-  ) {
-    autoScroll = false;
-    autoscrollBtn.classList.remove('active');
-    autoscrollBtn.classList.add('inactive');
-    autoscrollBtn.textContent = 'Auto Scroll';
-  }
-});
-
+// Scroll Output to Bottom
 function scrollOutputToBottom() {
-  if (outputScrollContainer) {
-    outputScrollContainer.scrollTop = outputScrollContainer.scrollHeight;
-  } else {
-    outputElem.scrollTop = outputElem.scrollHeight;
+  if (consoleScrollContainer) {
+    consoleScrollContainer.scrollTop = consoleScrollContainer.scrollHeight;
   }
 }
 
-async function receive() {
+// Update Traffic Metrics
+function addTraffic(rx = 0, tx = 0) {
+  rxTotalBytes += rx;
+  txTotalBytes += tx;
+  if (rxBytesCounter) rxBytesCounter.textContent = rxTotalBytes.toLocaleString();
+  if (txBytesCounter) txBytesCounter.textContent = txTotalBytes.toLocaleString();
+}
+
+// Request / Select Port
+async function requestSerialPort() {
+  if (!checkSerialSupport()) return;
+
+  try {
+    const p = await navigator.serial.requestPort();
+    selectedPort = p;
+    const info = p.getInfo();
+    let label = 'COM Port Selected';
+    if (info.usbVendorId && info.usbProductId) {
+      label = `VID:${info.usbVendorId.toString(16).toUpperCase()} PID:${info.usbProductId.toString(16).toUpperCase()}`;
+    }
+    selectedPortLabel.textContent = label;
+    appendOutputLine(`Port selected: ${label}`, 'sys');
+  } catch (err) {
+    if (err.name !== 'NotFoundError') {
+      appendOutputLine(`Port selection error: ${err.message}`, 'err');
+    }
+  }
+}
+
+// Set Connection Status UI
+function setConnectionUI(connected, portDetails = '') {
+  if (connected) {
+    statusDot.classList.add('connected');
+    statusDot.classList.remove('disconnected');
+    statusBadge.classList.add('connected');
+    statusText.textContent = `Connected (${portDetails})`;
+    connectBtnText.textContent = 'Disconnect';
+    connectBtn.classList.remove('btn-primary');
+    connectBtn.classList.add('btn-secondary');
+  } else {
+    statusDot.classList.remove('connected');
+    statusDot.classList.add('disconnected');
+    statusBadge.classList.remove('connected');
+    statusText.textContent = 'Disconnected';
+    connectBtnText.textContent = 'Connect';
+    connectBtn.classList.remove('btn-secondary');
+    connectBtn.classList.add('btn-primary');
+  }
+}
+
+// Open / Connect to Serial Port
+async function toggleConnection() {
+  if (!checkSerialSupport()) return;
+
+  if (port) {
+    // Disconnect
+    await disconnectSerial();
+    return;
+  }
+
+  if (!selectedPort) {
+    // If not selected yet, prompt user
+    await requestSerialPort();
+    if (!selectedPort) return;
+  }
+
+  try {
+    serialConfig.baudRate = parseInt(quickBaudrate.value, 10) || 115200;
+
+    port = selectedPort;
+    await port.open({
+      baudRate: serialConfig.baudRate,
+      dataBits: serialConfig.dataBits,
+      stopBits: serialConfig.stopBits,
+      parity: serialConfig.parity,
+      flowControl: serialConfig.flowControl
+    });
+
+    const info = port.getInfo();
+    const portDesc = info.usbVendorId ? `USB Device @ ${serialConfig.baudRate}` : `${serialConfig.baudRate} bps`;
+    setConnectionUI(true, portDesc);
+    appendOutputLine(`Serial port opened at ${serialConfig.baudRate} bps (${serialConfig.dataBits}-${serialConfig.parity[0].toUpperCase()}-${serialConfig.stopBits})`, 'sys');
+
+    // Create write stream
+    writer = port.writable.getWriter();
+
+    // Start read loop
+    readLoop();
+  } catch (err) {
+    port = null;
+    writer = null;
+    setConnectionUI(false);
+    appendOutputLine(`Connection failed: ${err.message}`, 'err');
+  }
+}
+
+// Disconnect Serial
+async function disconnectSerial() {
+  if (!port) return;
+
+  try {
+    if (reader) {
+      await reader.cancel();
+      reader.releaseLock();
+      reader = null;
+    }
+    if (writer) {
+      writer.releaseLock();
+      writer = null;
+    }
+    await port.close();
+    appendOutputLine('Serial port closed.', 'sys');
+  } catch (err) {
+    appendOutputLine(`Error closing port: ${err.message}`, 'err');
+  } finally {
+    port = null;
+    setConnectionUI(false);
+  }
+}
+
+// Serial Receive Loop
+async function readLoop() {
+  let partialBuffer = '';
+  const textDecoder = new TextDecoder();
+
   try {
     reader = port.readable.getReader();
-    const decoder = new TextDecoder();
-    let buffer = '';
     while (true) {
       const { value, done } = await reader.read();
       if (done) {
-        closePortIfOpen(); 
-        reader = null;
         break;
       }
       if (value) {
-        buffer += decoder.decode(value, { stream: true });
-        let lines = buffer.split('\n');
-        buffer = lines.pop();
-        for (const line of lines) {
-          appendOutputLine(`[${getTimestamp()}] [RX]: ${line}`);
-        }
-        if (autoScroll) {
-          scrollOutputToBottom();
+        addTraffic(value.byteLength, 0);
+
+        if (currentViewMode === 'hex') {
+          appendOutputLine('', 'rx', value);
+        } else {
+          // Decode text stream and handle newlines cleanly
+          const decoded = textDecoder.decode(value, { stream: true });
+          partialBuffer += decoded;
+
+          const lines = partialBuffer.split(/\r\n|\n|\r/);
+          partialBuffer = lines.pop(); // keep last incomplete chunk
+
+          for (const line of lines) {
+            if (line.length > 0) {
+              appendOutputLine(`[RX]: ${line}`, 'rx');
+            }
+          }
         }
       }
     }
-  } catch (error) {
-    output.textContent += `[${getTimestamp()}] Error: ${error}\n`;
-    if (autoScroll) {
-      scrollOutputToBottom();
+  } catch (err) {
+    if (port) {
+      appendOutputLine(`Read loop terminated: ${err.message}`, 'err');
+    }
+  } finally {
+    if (reader) {
+      reader.releaseLock();
+      reader = null;
     }
   }
 }
 
-document.getElementById('clear-btn').addEventListener('click', function () {
-  document.getElementById('output').innerHTML = '';
-});
-
-// Hamburger and side nav logic
-const hamburgerMenu = document.getElementById('hamburger-menu');
-const sideNav = document.getElementById('side-nav');
-const closeSideNav = document.getElementById('close-side-nav');
-
-hamburgerMenu.addEventListener('click', function () {
-  hamburgerMenu.classList.toggle('active');
-  if (sideNav.style.width === '260px') {
-    sideNav.style.width = '0';
-  } else {
-    sideNav.style.width = '260px';
+// Send Data to Serial
+async function sendData(customPayload = null) {
+  if (!port || !writer) {
+    appendOutputLine('Error: Port is not connected. Connect a device first.', 'err');
+    return;
   }
-});
-closeSideNav.addEventListener('click', function () {
-  sideNav.style.width = '0';
-  hamburgerMenu.classList.remove('active');
-});
-// Optional: close side nav when clicking outside
-window.addEventListener('click', function (e) {
-  if (
-    sideNav.style.width === '260px' &&
-    !sideNav.contains(e.target) &&
-    e.target !== hamburgerMenu &&
-    !hamburgerMenu.contains(e.target)
-  ) {
-    sideNav.style.width = '0';
-    hamburgerMenu.classList.remove('active');
+
+  let text = customPayload !== null ? customPayload : inputBox.value;
+  if (customPayload === null && !text.trim()) return;
+
+  // Add to command history if user typed it
+  if (customPayload === null && text.trim()) {
+    commandHistory.push(text);
+    historyIndex = commandHistory.length;
+    inputBox.value = '';
   }
-});
 
-// User profile slider logic
-document.getElementById('user-profile-icon').addEventListener('click', function () {
-  document.getElementById('profile-nav').style.width = '240px';
-});
-document.getElementById('close-profile-nav').addEventListener('click', function () {
-  document.getElementById('profile-nav').style.width = '0';
-});
-window.addEventListener('click', function (e) {
-  const nav = document.getElementById('profile-nav');
-  if (nav.style.width === '240px' && !nav.contains(e.target) && e.target.id !== 'user-profile-icon') {
-    nav.style.width = '0';
-  }
-});
+  const format = sendFormatSelect.value;
+  const lineEnding = lineEndingSelect.value;
 
-window.addEventListener('DOMContentLoaded', function () {
-  const header = document.querySelector('.ser_term_header');
-  if (header) {
-    const headerHeight = header.offsetHeight + 'px';
-    document.documentElement.style.setProperty('--header-height', headerHeight);
-  }
-});
+  try {
+    let payloadBytes;
 
-const themeToggle = document.getElementById('theme-toggle');
-const themeToggleIcon = document.getElementById('theme-toggle-icon');
+    if (format === 'hex') {
+      // Parse Hex string into Uint8Array
+      const cleanHex = text.replace(/0x|\s+|,/gi, '');
+      if (cleanHex.length % 2 !== 0) {
+        appendOutputLine('Invalid Hex string: odd number of nibbles.', 'err');
+        return;
+      }
+      const match = cleanHex.match(/.{1,2}/g) || [];
+      payloadBytes = new Uint8Array(match.map(byte => parseInt(byte, 16)));
+      appendOutputLine(`[TX HEX]: ${match.join(' ').toUpperCase()}`, 'tx');
+    } else {
+      // ASCII text with line endings
+      let ending = '';
+      if (lineEnding === 'crlf') ending = '\r\n';
+      else if (lineEnding === 'lf') ending = '\n';
+      else if (lineEnding === 'cr') ending = '\r';
 
-function setTheme(mode) {
-  if (mode === 'dark') {
-    document.body.classList.add('dark-mode');
-    themeToggleIcon.src = '../common_artifacts/logo/sun_icon.png'; // Sun icon for dark mode
-    themeToggleIcon.alt = 'Switch to Light Mode';
-    localStorage.setItem('theme', 'dark');
-  } else {
-    document.body.classList.remove('dark-mode');
-    themeToggleIcon.src = '../common_artifacts/logo/moon_icon.png'; // Moon icon for light mode
-    themeToggleIcon.alt = 'Switch to Dark Mode';
-    localStorage.setItem('theme', 'light');
+      const fullString = text + ending;
+      payloadBytes = new TextEncoder().encode(fullString);
+      appendOutputLine(`[TX]: ${text}`, 'tx');
+    }
+
+    await writer.write(payloadBytes);
+    addTraffic(0, payloadBytes.byteLength);
+  } catch (err) {
+    appendOutputLine(`Send failed: ${err.message}`, 'err');
   }
 }
 
-themeToggle.addEventListener('click', () => {
-  const isDark = document.body.classList.toggle('dark-mode');
-  setTheme(isDark ? 'dark' : 'light');
-});
-
-themeToggle.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter' || e.key === ' ') {
-    themeToggle.click();
+// Toggle DTR and RTS Pins
+async function setControlSignals() {
+  if (!port) {
+    appendOutputLine('Hardware signals require an active serial connection.', 'info');
+    return;
   }
-});
-
-window.addEventListener('DOMContentLoaded', () => {
-  const savedTheme = localStorage.getItem('theme');
-  setTheme(savedTheme === 'dark' ? 'dark' : 'light');
-});
-
-document.getElementById('savelog-btn').addEventListener('click', function () {
-  const text = document.getElementById('output').textContent;
-  const blob = new Blob([text], { type: 'text/plain' });
-  const url = URL.createObjectURL(blob);
-
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'serial_output_log.txt';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-});
-
-// Instead of output.textContent += line + '\n';
-function appendOutputLine(line) {
-  const lineDiv = document.createElement('div');
-  lineDiv.className = 'output-line';
-  lineDiv.textContent = line;
-  document.getElementById('output').appendChild(lineDiv);
+  try {
+    await port.setSignals({
+      dataTerminalReady: dtrState,
+      requestToSend: rtsState
+    });
+    appendOutputLine(`Signals updated &mdash; DTR: ${dtrState ? 'ON' : 'OFF'}, RTS: ${rtsState ? 'ON' : 'OFF'}`, 'sys');
+  } catch (err) {
+    appendOutputLine(`Failed to set hardware signals: ${err.message}`, 'err');
+  }
 }
+
+// Pulse DTR/RTS to Reset MCU (ESP32 / Arduino standard reset sequence)
+async function resetMCU() {
+  if (!port) {
+    appendOutputLine('Connect to an MCU first to trigger reset.', 'err');
+    return;
+  }
+  try {
+    appendOutputLine('Pulsing DTR/RTS reset sequence...', 'sys');
+    // Set DTR false, RTS true
+    await port.setSignals({ dataTerminalReady: false, requestToSend: true });
+    await new Promise(r => setTimeout(r, 100));
+    // Set DTR true, RTS false
+    await port.setSignals({ dataTerminalReady: true, requestToSend: false });
+    await new Promise(r => setTimeout(r, 100));
+    // Release both
+    await port.setSignals({ dataTerminalReady: false, requestToSend: false });
+    appendOutputLine('Reset pulse complete.', 'sys');
+  } catch (err) {
+    appendOutputLine(`Reset sequence error: ${err.message}`, 'err');
+  }
+}
+
+// Event Listeners
+document.addEventListener('DOMContentLoaded', () => {
+  checkSerialSupport();
+
+  // Port selector
+  portSelectBtn.addEventListener('click', requestSerialPort);
+
+  // Connect toggle
+  connectBtn.addEventListener('click', toggleConnection);
+
+  // Quick baudrate change
+  quickBaudrate.addEventListener('change', (e) => {
+    if (e.target.value === 'custom') {
+      const customRate = prompt('Enter custom baud rate (bps):', '500000');
+      if (customRate && !isNaN(customRate)) {
+        const opt = document.createElement('option');
+        opt.value = customRate;
+        opt.textContent = `${customRate} (Custom)`;
+        opt.selected = true;
+        quickBaudrate.appendChild(opt);
+        serialConfig.baudRate = parseInt(customRate, 10);
+      } else {
+        quickBaudrate.value = '115200';
+      }
+    } else {
+      serialConfig.baudRate = parseInt(e.target.value, 10);
+    }
+  });
+
+  // Auto-scroll toggle
+  autoscrollBtn.addEventListener('click', () => {
+    autoScroll = !autoScroll;
+    autoscrollBtn.classList.toggle('active', autoScroll);
+  });
+
+  // User manual scroll detection
+  if (consoleScrollContainer) {
+    consoleScrollContainer.addEventListener('scroll', () => {
+      const isAtBottom = consoleScrollContainer.scrollTop + consoleScrollContainer.clientHeight >= consoleScrollContainer.scrollHeight - 10;
+      if (!isAtBottom && autoScroll) {
+        autoScroll = false;
+        autoscrollBtn.classList.remove('active');
+      }
+    });
+  }
+
+  // Clear Output
+  clearBtn.addEventListener('click', () => {
+    if (consoleOutput) consoleOutput.innerHTML = '';
+    rxTotalBytes = 0;
+    txTotalBytes = 0;
+    addTraffic(0, 0);
+  });
+
+  // Toggle Timestamps
+  toggleTimestampsBtn.addEventListener('click', () => {
+    showTimestamps = !showTimestamps;
+    toggleTimestampsBtn.classList.toggle('active', showTimestamps);
+  });
+
+  // View Mode: ASCII vs HEX
+  modeAsciiBtn.addEventListener('click', () => {
+    currentViewMode = 'ascii';
+    modeAsciiBtn.classList.add('active');
+    modeHexBtn.classList.remove('active');
+  });
+
+  modeHexBtn.addEventListener('click', () => {
+    currentViewMode = 'hex';
+    modeHexBtn.classList.add('active');
+    modeAsciiBtn.classList.remove('active');
+  });
+
+  // Download Log
+  savelogBtn.addEventListener('click', () => {
+    const textContent = Array.from(consoleOutput.children).map(c => c.textContent).join('\n');
+    const blob = new Blob([textContent], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `tfs_serial_log_${new Date().toISOString().slice(0, 10)}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+
+  // Send Actions
+  sendBtn.addEventListener('click', () => sendData());
+  inputBox.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      sendData();
+    } else if (e.key === 'ArrowUp') {
+      // Command history up
+      if (historyIndex > 0) {
+        historyIndex--;
+        inputBox.value = commandHistory[historyIndex] || '';
+      }
+    } else if (e.key === 'ArrowDown') {
+      // Command history down
+      if (historyIndex < commandHistory.length - 1) {
+        historyIndex++;
+        inputBox.value = commandHistory[historyIndex] || '';
+      } else {
+        historyIndex = commandHistory.length;
+        inputBox.value = '';
+      }
+    }
+  });
+
+  // Quick Macros
+  macroButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const cmd = btn.getAttribute('data-send');
+      if (cmd) sendData(cmd);
+    });
+  });
+
+  // Hardware Signal Toggles
+  dtrBtn.addEventListener('click', () => {
+    dtrState = !dtrState;
+    dtrBtn.classList.toggle('active', dtrState);
+    dtrBtn.querySelector('.sig-status').textContent = dtrState ? 'ON' : 'OFF';
+    setControlSignals();
+  });
+
+  rtsBtn.addEventListener('click', () => {
+    rtsState = !rtsState;
+    rtsBtn.classList.toggle('active', rtsState);
+    rtsBtn.querySelector('.sig-status').textContent = rtsState ? 'ON' : 'OFF';
+    setControlSignals();
+  });
+
+  espResetBtn.addEventListener('click', resetMCU);
+
+  // Settings Modal Handlers
+  configureBtn.addEventListener('click', () => {
+    document.getElementById('modal-baudrate').value = serialConfig.baudRate;
+    document.getElementById('modal-databits').value = serialConfig.dataBits;
+    document.getElementById('modal-stopbits').value = serialConfig.stopBits;
+    document.getElementById('modal-parity').value = serialConfig.parity;
+    document.getElementById('modal-flowcontrol').value = serialConfig.flowControl;
+    configModal.classList.add('open');
+  });
+
+  function closeConfigModal() {
+    configModal.classList.remove('open');
+  }
+
+  closeConfig.addEventListener('click', closeConfigModal);
+  cancelConfigBtn.addEventListener('click', closeConfigModal);
+
+  configForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    serialConfig.baudRate = parseInt(document.getElementById('modal-baudrate').value, 10);
+    serialConfig.dataBits = parseInt(document.getElementById('modal-databits').value, 10);
+    serialConfig.stopBits = parseInt(document.getElementById('modal-stopbits').value, 10);
+    serialConfig.parity = document.getElementById('modal-parity').value;
+    serialConfig.flowControl = document.getElementById('modal-flowcontrol').value;
+
+    quickBaudrate.value = serialConfig.baudRate;
+    closeConfigModal();
+    appendOutputLine(`Config updated: ${serialConfig.baudRate} bps, ${serialConfig.dataBits} bits, parity: ${serialConfig.parity}, flow: ${serialConfig.flowControl}`, 'sys');
+  });
+});

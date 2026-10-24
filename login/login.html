@@ -1,39 +1,177 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en" data-theme="dark">
 <head>
-  <title>Login Page</title>
-  <link rel="stylesheet" type="text/css" href="..\common_css\style.css">
-  <link rel="stylesheet" type="text/css" href="..\common_css\header_footer.css">
-</head>
+  <meta charset="UTF-8">
+  <title>Sign In | Trends For Sale (TFS)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Sign in to your Trends For Sale account. Access hardware workbench tools, saved sessions, and engineering utilities.">
 
-<body>
-  <div class="container">
-    <div class="logo">
-      <img src="..\common_artifacts\logo\test_blox_header_logo.png" alt="Test Blox Logo">
+  <!-- Design System & Navbar Styles -->
+  <link rel="stylesheet" href="../common_css/design_system.css">
+  <link rel="stylesheet" href="../common_css/navbar.css">
+  
+  <style>
+    .auth-page-wrapper {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+      background: var(--bg-primary);
+    }
+    .auth-bg-glow {
+      position: absolute;
+      width: 600px;
+      height: 400px;
+      background: radial-gradient(circle, var(--accent-cyan-glow) 0%, rgba(99, 102, 241, 0.15) 50%, transparent 70%);
+      filter: blur(80px);
+      z-index: 0;
+      pointer-events: none;
+    }
+    .auth-card {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 420px;
+      padding: 36px 32px;
+    }
+    .auth-header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .auth-logo-badge {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-md);
+      background: var(--gradient-brand);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      box-shadow: 0 0 20px var(--accent-cyan-glow);
+    }
+    .auth-logo-badge svg {
+      width: 26px;
+      height: 26px;
+      fill: #ffffff;
+    }
+    .auth-title {
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+    .auth-subtitle {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .auth-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .auth-group label {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+    .auth-input {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-md);
+      padding: 10px 14px;
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-size: 0.92rem;
+      outline: none;
+      transition: all var(--transition-fast);
+    }
+    .auth-input:focus {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 12px var(--accent-cyan-glow);
+    }
+    .auth-extra-row {
+      display: flex;
+      justify-content: flex-end;
+      font-size: 0.82rem;
+    }
+    .auth-alert {
+      display: none;
+      padding: 10px 14px;
+      border-radius: var(--radius-md);
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-bottom: 12px;
+    }
+    .auth-alert.error {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      color: #f87171;
+    }
+    .auth-alert.success {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      color: #34d399;
+    }
+    .auth-footer-text {
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 24px;
+    }
+  </style>
+</head>
+<body class="auth-page-wrapper">
+  <div class="auth-bg-glow"></div>
+  
+  <div class="glass-card auth-card">
+    <div class="auth-header">
+      <a href="../home/home_page.html" class="auth-logo-badge" title="TFS Home">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+        </svg>
+      </a>
+      <h2 class="auth-title">Welcome Back</h2>
+      <p class="auth-subtitle">Sign in to your TFS Developer Workspace</p>
     </div>
-    <h3 class="welcome_text_login_screen">welcome, login here ..!</h3>
-    <form id="loginForm" method="post" action="login.php">
-      <input type="text" name="username" placeholder="Username" required><br>
-      <input type="password" name="password" placeholder="Password" required><br>
-      <!-- Forgot Credentials link -->
-      <p class="forgot_creds"><a href="forgot_login.html">Forgot Credentials?</a></p>
-      <!-- Login Button -->
-      <input type="submit" value="Login">
+
+    <form id="loginForm" method="post" action="login.php" class="auth-form" autocomplete="on">
+      <!-- Hidden CSRF token field -->
+      <input type="hidden" name="csrf_token" value="">
+
+      <div class="auth-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" class="auth-input" placeholder="e.g. johndoe" required autocomplete="username">
+      </div>
+
+      <div class="auth-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" class="auth-input" placeholder="••••••••" required autocomplete="current-password">
+      </div>
+
+      <div class="auth-extra-row">
+        <a href="forgot_login.html" class="auth-link">Forgot Password?</a>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;">
+        Sign In
+      </button>
     </form>
-    <!-- Registration link -->
-    <p>Don't have an account? <a href="..\registration\register.html">Register</a></p>
+
+    <p class="auth-footer-text">
+      Don't have an account? <a href="../registration/register.html">Create one here</a>
+    </p>
   </div>
 
-  <!-- Footer -->
-  <footer>
-    <div class="footer-content">
-      <!-- Add your footer content here -->
-      <p>&copy; 2025 My Web Page. All rights reserved.</p>
-    </div>
-  </footer>
-
-  <script src="..\common_js\script.js"></script>
+  <!-- Scripts -->
+  <script src="../common_js/navbar.js"></script>
+  <script src="../common_js/auth.js"></script>
 </body>
-
 </html>

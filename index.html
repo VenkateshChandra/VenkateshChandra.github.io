@@ -1,11 +1,35 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta http-equiv="refresh" content="0; url=home/home_page.html">
     <title>Redirecting...</title>
+    <script>
+      // Get the current hostname (subdomain.domain.com)
+      var host = window.location.hostname;
+      // Define your subdomain-based redirects
+      if (host.startsWith('about.')) {
+        window.location.href = './about/about_page.html';
+      } else if (host.startsWith('contact.')) {
+        window.location.href = './contact/contact_home_page.html';
+      } else if (host.startsWith('tools.')) {
+        window.location.href = './tools/tools_home_page.html';
+      } else if (host.startsWith('blog.')) {
+        window.location.href = './blog/blog_home_page.html';
+      } else if (host.startsWith('shop.')) {
+        window.location.href = './shop/shop_home_page.html';
+      } else if (host.startsWith('calculators.')) {
+        window.location.href = './calculators/calculators_home_page.html';
+      } else if (host.startsWith('convertors.')) {
+        window.location.href = './convertors/convertors_home_page.html';
+      } else if (host.startsWith('serialterminal.')) {
+        window.location.href = './serial_term/serial_term.html';
+      } else if (host.startsWith('agecalculator.')) {
+        window.location.href = './age_calculator/age_calculator.html';
+      } else {
+        window.location.href = './home/home_page.html';
+      }
+    </script>
   </head>
   <body>
-    <!-- Welcome Page -->
-    <p>If you are not redirected automatically, <a href="home/home_page.html">click here</a>.</p>
+    <p>If you are not redirected automatically, <a href="./home/home_page.html">click here</a>.</p>
   </body>
 </html>

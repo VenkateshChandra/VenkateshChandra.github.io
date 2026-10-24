@@ -1,148 +1,457 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
-  <title>TFS Home</title>
+  <title>Trends For Sale (TFS) | Next-Gen Embedded Tools & Engineering Suite</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Trends For Sale (TFS) - Modern Web Serial Terminal, hardware protocol analysis tools, precision engineering calculators, and tech resources.">
+  
+  <!-- Design System & Navbar Styles -->
+  <link rel="stylesheet" href="../common_css/design_system.css">
+  <link rel="stylesheet" href="../common_css/navbar.css">
   <link rel="stylesheet" href="home_page.css">
-  <link rel="stylesheet" href="home_page_mobile.css">
 </head>
 <body>
-  <div class="main-wrapper">
+  <div class="site-wrapper">
+    <!-- Main Sticky Header -->
     <header class="site-header">
-      <div class="site-branding">
-        <h1 class="site-title">Trends For Sale</h1>
-        <h4 class="site-description">...Beyond The Trends, Into Your Hands</h4>
-      </div>
-      <nav class="main-navigation">
-        <button class="hamburger" id="hamburger-btn" aria-label="Open menu">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-        <ul class="nav-menu">
-          <li><a href="../home/home_page.html" class="active">Home</a></li>
-          <li><a href="../about/about_page.html">About</a></li>
-          <li><a href="../contact/contact_home_page.html">Contact</a></li>
-          <li class="dropdown">
-            <a href="#" class="dropbtn">Tools</a>
-            <ul class="dropdown-content">
-              <li class="has-submenu">
-                <a href="../common_pages/coming_soon.html">Calculators</a>
-                <ul class="submenu">
-                  <li><a href="../common_pages/coming_soon.html">Basic Calc</a></li>
-                  <li><a href="../common_pages/coming_soon.html">Scientific Calc</a></li>
-                  <li><a href="../common_pages/coming_soon.html">Programmer Calc</a></li>
-                </ul>
-              </li>
-              <li class="has-submenu">
-                <a href="../common_pages/coming_soon.html">Converters</a>
-                <ul class="submenu">
-                  <li><a href="../common_pages/coming_soon.html">Length Converter</a></li>
-                  <li><a href="../common_pages/coming_soon.html">Weight Converter</a></li>
-                </ul>
-              </li>
-              <li class="has-submenu">
-                <a href="../common_pages/coming_soon.html">Data Analyzers</a>
-                <ul class="submenu">
-                  <li><a href="../serial_term/serial_term.html">Serial Terminal</a></li>
-                  <li><a href="../common_pages/coming_soon.html">CAN Analysis Tool</a></li>
-                </ul>
-              </li>
-            </ul>
-          </li>
-          <li><a href="../blog/blog_home_page.html">Blog</a></li>
-          <li><a href="../common_pages/coming_soon.html">Shop</a></li>
-          <li><a href="../login/login.html">Login</a></li>
-        </ul>
-      </nav>
-      <nav class="mobile-nav" id="mobile-nav">
-        <button class="close-mobile-nav" id="close-mobile-nav" aria-label="Close menu">&times;</button>
-        <ul>
-          <li><a href="../home/home_page.html">Home</a></li>
-          <li><a href="../common_pages/coming_soon.html">About</a></li>
-          <li><a href="../common_pages/coming_soon.html">Contact</a></li>
-          <li><a href="../serial_term/serial_term.html">Serial Terminal</a></li>
-          <li><a href="../common_pages/coming_soon.html">CAN Analysis Tool</a></li>
-          <li><a href="../blog/blog_home_page.html">Blog</a></li>
-          <li><a href="../common_pages/coming_soon.html">Shop</a></li>
-          <li><a href="../login/login.html">Login</a></li>
-        </ul>
-      </nav>
-    </header>
-    <main class="main-body">
-      <div class="image-slider">
-        <div class="slides">
-          <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80" alt="Stock 1">
-          <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=1200&q=80" alt="Stock 2">
-          <img src="../common_artifacts/Images/fin_calculators.jpeg?auto=format&fit=crop&w=1200&q=80" alt="Financial Calculator_1">
-          <img src="../common_artifacts/Images/fin_calculators1.jpeg?auto=format&fit=crop&w=1200&q=80" alt="Financial Calculator_2">
-        </div>
-        <button class="slider-btn prev">&#10094;</button>
-        <button class="slider-btn next">&#10095;</button>
-      </div>
-      <div class="site-content">
-      <section class="featured-post">
-        <div class="featured-content">
-          <h1 class="entry-title">Welcome to TFS</h1>
-          <div class="entry-meta">
+      <div class="header-container">
+        <a href="../home/home_page.html" class="site-branding">
+          <div class="brand-logo-wrap">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
           </div>
-          <div class="entry-body">
-            <p>
-              Stay ahead with trending tech news, DIY projects, and exclusive deals on electronics & software.
+          <div class="brand-text-wrap">
+            <span class="site-title">Trends For Sale</span>
+            <span class="site-tagline">Beyond The Trends, Into Your Hands</span>
+          </div>
+        </a>
+
+        <nav class="main-navigation">
+          <ul class="nav-links">
+            <li class="nav-item">
+              <a href="../home/home_page.html" class="nav-link active">Home</a>
+            </li>
+            <li class="nav-item">
+              <a href="#tools-section" class="nav-link">
+                Tools
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M6 9l6 6 6-6"/>
+                </svg>
+              </a>
+              <div class="dropdown-menu">
+                <div class="dropdown-grid">
+                  <div class="dropdown-col">
+                    <span class="dropdown-col-title">Hardware & Analyzers</span>
+                    <a href="../serial_term/serial_term.html" class="dropdown-card">
+                      <div class="dropdown-card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                          <line x1="8" y1="21" x2="16" y2="21"/>
+                          <line x1="12" y1="17" x2="12" y2="21"/>
+                        </svg>
+                      </div>
+                      <div class="dropdown-card-info">
+                        <h4>Serial Terminal <span class="badge badge-live">Live</span></h4>
+                        <p>Web Serial USB & COM monitor</p>
+                      </div>
+                    </a>
+                    <a href="../common_pages/coming_soon.html" class="dropdown-card">
+                      <div class="dropdown-card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                        </svg>
+                      </div>
+                      <div class="dropdown-card-info">
+                        <h4>CAN Bus Analyzer</h4>
+                        <p>Automotive bus diagnostic tool</p>
+                      </div>
+                    </a>
+                    <a href="../common_pages/coming_soon.html" class="dropdown-card">
+                      <div class="dropdown-card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <circle cx="12" cy="12" r="9"/>
+                          <path d="M12 7v5l3 3"/>
+                        </svg>
+                      </div>
+                      <div class="dropdown-card-info">
+                        <h4>I2C & SPI Tools</h4>
+                        <p>Bus packet capture & analyzer</p>
+                      </div>
+                    </a>
+                  </div>
+                  <div class="dropdown-col">
+                    <span class="dropdown-col-title">Calculators & Utilities</span>
+                    <a href="../common_pages/coming_soon.html" class="dropdown-card">
+                      <div class="dropdown-card-info">
+                        <h4>Precision Calculators</h4>
+                        <p>Scientific, Programmer & Time</p>
+                      </div>
+                    </a>
+                    <a href="../common_pages/coming_soon.html" class="dropdown-card">
+                      <div class="dropdown-card-info">
+                        <h4>Unit & Data Converters</h4>
+                        <p>Radix, Length, Weight & Baud</p>
+                      </div>
+                    </a>
+                    <a href="../blog/blog_home_page.html" class="dropdown-card">
+                      <div class="dropdown-card-info">
+                        <h4>Tech Blog</h4>
+                        <p>Hardware guides & tech articles</p>
+                      </div>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="nav-item">
+              <a href="../about/about_page.html" class="nav-link">About</a>
+            </li>
+            <li class="nav-item">
+              <a href="../contact/contact_home_page.html" class="nav-link">Contact</a>
+            </li>
+            <li class="nav-item">
+              <a href="../blog/blog_home_page.html" class="nav-link">Blog</a>
+            </li>
+            <li class="nav-item">
+              <a href="../common_pages/coming_soon.html" class="nav-link">Shop</a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="header-actions">
+          <!-- Theme Toggle -->
+          <button id="theme-toggle-btn" class="theme-toggle-btn" title="Toggle Dark/Light Mode" aria-label="Toggle theme">
+            <span id="theme-icon-slot">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/>
+              </svg>
+            </span>
+          </button>
+
+          <!-- User / Login Slot -->
+          <div id="navbar-auth-slot">
+            <a href="../login/login.html" class="btn btn-secondary btn-sm">Login</a>
+          </div>
+
+          <!-- Mobile Hamburger -->
+          <button id="hamburger-btn" class="hamburger-btn" aria-label="Toggle Navigation">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Mobile Drawer -->
+    <div id="mobile-backdrop" class="mobile-nav-backdrop"></div>
+    <div id="mobile-drawer" class="mobile-nav-drawer">
+      <div class="mobile-drawer-header">
+        <span class="site-title">Trends For Sale</span>
+      </div>
+      <ul class="mobile-links">
+        <li><a href="../home/home_page.html" class="mobile-link active">Home</a></li>
+        <li><a href="../serial_term/serial_term.html" class="mobile-link">🚀 Serial Terminal</a></li>
+        <li><a href="../common_pages/coming_soon.html" class="mobile-link">⚡ Protocol Analyzers</a></li>
+        <li><a href="../common_pages/coming_soon.html" class="mobile-link">🧮 Calculators</a></li>
+        <li><a href="../about/about_page.html" class="mobile-link">About</a></li>
+        <li><a href="../contact/contact_home_page.html" class="mobile-link">Contact</a></li>
+        <li><a href="../blog/blog_home_page.html" class="mobile-link">Blog</a></li>
+        <li><a href="../common_pages/coming_soon.html" class="mobile-link">Shop</a></li>
+        <li><a href="../login/login.html" class="mobile-link">Login / Account</a></li>
+      </ul>
+    </div>
+
+    <!-- Main Content Area -->
+    <main class="main-content-flow">
+      <!-- Hero Section -->
+      <section class="hero-section">
+        <div class="hero-background-glow"></div>
+        <div class="hero-container">
+          <div class="hero-content">
+            <div class="hero-badge-wrap">
+              <span class="badge badge-pulse">
+                ⚡ Embedded Engineering Suite
+              </span>
+              <span class="badge">Web Serial Powered</span>
+            </div>
+
+            <h1 class="hero-headline">
+              Direct Hardware Control, <br>
+              <span class="gradient-text">Right From Your Browser.</span>
+            </h1>
+
+            <p class="hero-subtext">
+              Zero drivers, zero desktop installs. Communicate with microcontrollers, Arduino, ESP32, and industrial hardware at up to 921,600 baud with 100% client-side privacy.
             </p>
-            <p>
-              Welcome to Trends For Sale, your hub for all things new and trending. We're a curated platform dedicated to bringing you the best in technology, from innovative gadgets and digital products to essential tools for your business.
-            </p>
-            <p>
-              Why choose us?
-            </p>
-            <p>
-              1. Curated Shop: Explore a hand-picked selection of trending tech and products.
-            </p>
-            <p>
-              2. Insightful Blog: Stay informed with our deep dives into the latest trends and industry news.
-            </p>
-            <p>
-              3. Free Tools: Access a suite of useful calculators, PDF editors, and other generic tools to boost your productivity.
-            </p>
-            <p>
-              This is more than just a store—it's a resource built for hobbyists and small business owners who are passionate about staying ahead.
-            </p>
+
+            <div class="hero-cta-group">
+              <a href="../serial_term/serial_term.html" class="btn btn-primary btn-lg">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polygon points="5 3 19 12 5 21 5 3"/>
+                </svg>
+                Launch Serial Terminal
+              </a>
+              <a href="#tools-section" class="btn btn-secondary btn-lg">
+                Explore All Tools
+              </a>
+            </div>
+
+            <div class="hero-highlights">
+              <div class="highlight-item">
+                <span class="highlight-val">100%</span>
+                <span class="highlight-label">Client-Side Privacy</span>
+              </div>
+              <div class="highlight-divider"></div>
+              <div class="highlight-item">
+                <span class="highlight-val">0</span>
+                <span class="highlight-label">Drivers Needed</span>
+              </div>
+              <div class="highlight-divider"></div>
+              <div class="highlight-item">
+                <span class="highlight-val">921.6k</span>
+                <span class="highlight-label">Max Baud Rate</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hero Interactive Terminal Sandbox Preview -->
+          <div class="hero-terminal-showcase">
+            <div class="terminal-card">
+              <div class="terminal-topbar">
+                <div class="term-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="term-title">
+                  <span class="live-indicator"></span>
+                  ESP32-S3 @ COM4 (115200 bps)
+                </div>
+                <div class="term-action-badge">Live Sandbox</div>
+              </div>
+              <div class="term-body" id="sandbox-term-output">
+                <div class="term-line info">[00:00:01.120] [SYS]: Web Serial API Ready (Chromium Engine)</div>
+                <div class="term-line sys">[00:00:01.450] [CONNECT]: Port COM4 opened (115200 8-N-1)</div>
+                <div class="term-line rx">[00:00:01.890] [RX]: rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)</div>
+                <div class="term-line rx">[00:00:02.120] [RX]: WiFi Connected: IP 192.168.1.142 | RSSI: -42dBm</div>
+                <div class="term-line tx">[00:00:03.010] [TX]: AT+STATUS?</div>
+                <div class="term-line rx">[00:00:03.045] [RX]: +STATUS: READY, TEMP: 28.4C, VCC: 3.31V</div>
+              </div>
+              <div class="term-interactive-bar">
+                <input type="text" id="sandbox-input" placeholder="Type a command (e.g. 'help', 'ping', 'led_on')..." autocomplete="off">
+                <button id="sandbox-send-btn" class="btn btn-primary btn-sm">Send</button>
+              </div>
+              <div class="term-quick-macros">
+                <button class="macro-chip" data-cmd="AT+STATUS?">AT+STATUS?</button>
+                <button class="macro-chip" data-cmd="ping">ping</button>
+                <button class="macro-chip" data-cmd="led_toggle">led_toggle</button>
+                <button class="macro-chip" data-cmd="help">help</button>
+              </div>
+            </div>
           </div>
         </div>
       </section>
-      <aside class="sidebar">
-        <div class="widget">
-          <h3 class="widget-title">Quick Links</h3>
-          <ul class="quick-links">
-            <li><a href="../serial_term/serial_term.html">Serial Terminal</a></li>
-            <li><a href="#">Calculators</a></li>
-            <li><a href="#">Converters</a></li>
-            <li><a href="#">Support</a></li>
-          </ul>
-        </div>
-        <div class="widget">
-          <h3 class="widget-title">About</h3>
-          <p>
-            TFS is a collection of utilities designed for productivity and hardware interfacing. Enjoy a clean and modern experience!
-            <p>
-              <strong>Our Mission:</strong> To empower users with the tools they need to succeed in a fast-paced digital world.
+
+      <!-- Tools Section -->
+      <section id="tools-section" class="section-tools">
+        <div class="section-container">
+          <div class="section-header">
+            <span class="badge">Comprehensive Toolkit</span>
+            <h2 class="section-title">Designed for Engineers, Makers & Innovators</h2>
+            <p class="section-desc">
+              Whether you are debugging embedded firmware, analyzing bus frames, or calculating RF parameters, TFS provides unified in-browser tooling.
             </p>
-            <p>
-              <strong>Our Vision:</strong> To be the leading platform for innovative tools and resources that enhance productivity and creativity.
-            </p>
-          </p>
+          </div>
+
+          <div class="tools-grid">
+            <!-- Tool 1: Serial Terminal (Featured) -->
+            <div class="glass-card tool-feature-card featured">
+              <div class="card-badge-row">
+                <span class="badge badge-live">Live & Ready</span>
+                <span class="badge">Flagship</span>
+              </div>
+              <div class="card-icon-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                  <line x1="8" y1="21" x2="16" y2="21"/>
+                  <line x1="12" y1="17" x2="12" y2="21"/>
+                </svg>
+              </div>
+              <h3 class="tool-card-title">Web Serial Terminal</h3>
+              <p class="tool-card-desc">
+                Full-featured serial monitor supporting custom baud rates, dual ASCII/HEX views, automatic timestamping, log export, and DTR/RTS hardware control.
+              </p>
+              <ul class="tool-feature-list">
+                <li>Baud rates from 300 up to 921,600 bps</li>
+                <li>Real-time RX/TX color syntax tagging</li>
+                <li>Quick Macro shortcuts and command history memory</li>
+              </ul>
+              <div class="card-action-wrap">
+                <a href="../serial_term/serial_term.html" class="btn btn-primary">Open Terminal &rarr;</a>
+              </div>
+            </div>
+
+            <!-- Tool 2: CAN Bus Analyzer -->
+            <div class="glass-card tool-feature-card">
+              <div class="card-badge-row">
+                <span class="badge">In Development</span>
+              </div>
+              <div class="card-icon-wrap icon-purple">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                </svg>
+              </div>
+              <h3 class="tool-card-title">CAN Bus Analysis Tool</h3>
+              <p class="tool-card-desc">
+                Diagnostic and packet inspection tool for Controller Area Networks (CAN 2.0A/B and CAN-FD) with DBC decoding support.
+              </p>
+              <ul class="tool-feature-list">
+                <li>Standard & Extended Frame Decoding</li>
+                <li>Arbitration ID filter & live trace table</li>
+                <li>Periodic frame injector & transmission scheduler</li>
+              </ul>
+              <div class="card-action-wrap">
+                <a href="../common_pages/coming_soon.html" class="btn btn-secondary">Learn More &rarr;</a>
+              </div>
+            </div>
+
+            <!-- Tool 3: I2C & SPI Protocol Analyzers -->
+            <div class="glass-card tool-feature-card">
+              <div class="card-badge-row">
+                <span class="badge">Roadmap</span>
+              </div>
+              <div class="card-icon-wrap icon-amber">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="9"/>
+                  <path d="M12 7v5l3 3"/>
+                </svg>
+              </div>
+              <h3 class="tool-card-title">I2C & SPI Bus Analyzers</h3>
+              <p class="tool-card-desc">
+                High-speed serial peripheral interface and inter-integrated circuit bus monitors for sensor debugging and EEPROM read/write.
+              </p>
+              <ul class="tool-feature-list">
+                <li>Address scan and ACK/NACK validation</li>
+                <li>SPI Mode 0, 1, 2, 3 clock polarity inspection</li>
+                <li>Hex payload breakdown and sensor parsing</li>
+              </ul>
+              <div class="card-action-wrap">
+                <a href="../common_pages/coming_soon.html" class="btn btn-secondary">Learn More &rarr;</a>
+              </div>
+            </div>
+
+            <!-- Tool 4: Engineering Calculators -->
+            <div class="glass-card tool-feature-card">
+              <div class="card-badge-row">
+                <span class="badge">Suite</span>
+              </div>
+              <div class="card-icon-wrap icon-emerald">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="4" y="2" width="16" height="20" rx="2"/>
+                  <line x1="8" y1="6" x2="16" y2="6"/>
+                  <line x1="16" y1="14" x2="16" y2="18"/>
+                  <path d="M16 10h.01M12 10h.01M8 10h.01M12 14h.01M8 14h.01M12 18h.01M8 18h.01"/>
+                </svg>
+              </div>
+              <h3 class="tool-card-title">Precision Calculators</h3>
+              <p class="tool-card-desc">
+                Specialized calculation tools covering scientific formulas, programmer bitwise operations (AND, OR, XOR, shifts), and timing deltas.
+              </p>
+              <ul class="tool-feature-list">
+                <li>64-bit Programmer bitwise calculator</li>
+                <li>Timestamp delta & clock frequency counter</li>
+                <li>Ohm's Law, resistor divider & RC filter calculators</li>
+              </ul>
+              <div class="card-action-wrap">
+                <a href="../common_pages/coming_soon.html" class="btn btn-secondary">Open Calculators &rarr;</a>
+              </div>
+            </div>
+          </div>
         </div>
-      </aside>
-      </div>
+      </section>
+
+      <!-- Why TFS / Security & Architecture -->
+      <section class="section-architecture">
+        <div class="section-container">
+          <div class="arch-card glass-card">
+            <div class="arch-header">
+              <h2 class="section-title">Zero Installation. Zero Vulnerabilities.</h2>
+              <p class="section-desc">
+                Built from the ground up prioritizing developer security, client-side execution, and performance.
+              </p>
+            </div>
+            <div class="arch-pillars">
+              <div class="pillar-item">
+                <div class="pillar-icon">🔒</div>
+                <h4>100% Private Data Stream</h4>
+                <p>Hardware serial packets and telemetry never touch our servers. Every byte flows directly between your USB port and the browser runtime.</p>
+              </div>
+              <div class="pillar-item">
+                <div class="pillar-icon">⚡</div>
+                <h4>Native Web Serial Engine</h4>
+                <p>Leveraging standard Chromium hardware APIs to access COM ports, FTDI chips, CH340, CP2102, and native USB MCUs with minimal latency.</p>
+              </div>
+              <div class="pillar-item">
+                <div class="pillar-icon">💻</div>
+                <h4>Cross-Platform Support</h4>
+                <p>Runs seamlessly on Windows, macOS, Linux, and Chromebooks without installing proprietary drivers or bulky native IDEs.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
+
+    <!-- Site Footer -->
     <footer class="site-footer">
-      <div class="footer-content">
-        &copy; 2025 TFS &mdash; All rights reserved.
+      <div class="footer-container">
+        <div class="footer-top">
+          <div class="footer-brand">
+            <span class="site-title">Trends For Sale</span>
+            <p class="footer-tagline">Beyond The Trends, Into Your Hands &mdash; High-performance embedded utilities & engineering tools.</p>
+          </div>
+          <div class="footer-col">
+            <h4>Hardware Tools</h4>
+            <ul>
+              <li><a href="../serial_term/serial_term.html">Serial Terminal</a></li>
+              <li><a href="../common_pages/coming_soon.html">CAN Bus Analyzer</a></li>
+              <li><a href="../common_pages/coming_soon.html">I2C & SPI Tools</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Utilities</h4>
+            <ul>
+              <li><a href="../common_pages/coming_soon.html">Programmer Calculator</a></li>
+              <li><a href="../common_pages/coming_soon.html">Unit Converters</a></li>
+              <li><a href="../blog/blog_home_page.html">Engineering Blog</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Account & Security</h4>
+            <ul>
+              <li><a href="../login/login.html">Member Login</a></li>
+              <li><a href="../registration/register.html">Create Account</a></li>
+              <li><a href="../contact/contact_home_page.html">Support & Feedback</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2025 Trends For Sale (TFS). All rights reserved.</p>
+          <div class="footer-badges">
+            <span class="badge">Web Serial API</span>
+            <span class="badge">Safe & Sandbox Tested</span>
+          </div>
+        </div>
       </div>
     </footer>
   </div>
+
+  <!-- Scripts -->
+  <script src="../common_js/navbar.js"></script>
+  <script src="../common_js/auth.js"></script>
   <script src="home_page.js"></script>
 </body>
 </html>
